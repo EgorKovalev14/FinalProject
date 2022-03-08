@@ -1,5 +1,6 @@
 package ru.samsung.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     ListView listView;
     final static int MY_PERMISSION_REQUEST = 1;
+    private static final int PERMISSION_STORAGE = 101;
+
 
 
     @Override
@@ -37,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSION_REQUEST);
         }
+        if (!PermissionUtils.hasPermissions(MainActivity.this)){
+            PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
+        }
+        PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
 
@@ -48,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,4 +75,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
 
     }
+
+
 }
