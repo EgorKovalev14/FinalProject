@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     ListView listView;
-    final static int MY_PERMISSION_REQUEST = 1;
     private static final int PERMISSION_STORAGE = 101;
 
 
@@ -37,18 +36,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSION_REQUEST);
-        }
+
         if (!PermissionUtils.hasPermissions(MainActivity.this)){
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
-        PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
+//        PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
 
-        books.add(new BookItem("Правила проведения соревнований", false, "Rutkovskiy_Dzhuri_1_Dzhuri-kozaka-Shvayki_RuLit_Net.txt"));
-        books.add(new BookItem("Пролетая над гнездом кукушки", false, ""));
+        books.add(new BookItem("Правила проведения соревнований", false, "/Download/Test123 "));
+        //с Test123 работает(не .txt)
+        books.add(new BookItem("Пролетая над гнездом кукушки", false, "6893799.txt"));
         books.add(new BookItem("Вечера на хуторе близ Диканьки", false, ""));
 
         BaseAdapter adapter = new BookAdapter(this, books);
