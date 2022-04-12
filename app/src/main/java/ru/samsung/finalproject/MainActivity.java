@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ListView listView;
     private static final int PERMISSION_STORAGE = 101;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,21 +38,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (!PermissionUtils.hasPermissions(MainActivity.this)){
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
-//        PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
+// PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
-
-        books.add(new BookItem("Правила проведения соревнований", false, "/Download/Test123 "));
-        //с Test123 работает(не .txt)
-        books.add(new BookItem("Пролетая над гнездом кукушки", false, "6893799.txt"));
-        books.add(new BookItem("Вечера на хуторе близ Диканьки", false, ""));
-
+        books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
+        books.add(new BookItem("Consp", false, "/Конспект.txt"));//для мобильного
+        books.add(new BookItem("Конспект", false, "/Regex.cpp.txt"));//для мобильного
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,17 +55,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+        Log.d("My", "69MA");
         BookItem info = (BookItem) adapterView.getAdapter().getItem(i);
         String intent_file_path = info.getFilePath();
         Intent intent = new Intent(MainActivity.this, ReaderActivity.class);
         intent.putExtra("INTENT_FILE_PATH", intent_file_path);
         startActivity(intent);
-
     }
-
-
 }
