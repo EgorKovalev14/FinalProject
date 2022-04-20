@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        Log.d("My", "69MA");
         BookItem info = (BookItem) adapterView.getAdapter().getItem(i);
         String intent_file_path = info.getFilePath();
         Intent intent = new Intent(MainActivity.this, ReaderActivity.class);

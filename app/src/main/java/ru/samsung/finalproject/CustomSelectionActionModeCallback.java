@@ -17,15 +17,17 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
         Log.d("ActionTag", "onPrepareActionMode started");
         try{
-            Log.d("ActionTag", " try-catch started");
+ //           Log.d("ActionTag", " try-catch started");
             MenuItem copyItem=menu.findItem(android.R.id.copy);
-            Log.d("ActionTag", " item is found");
+//            Log.d("ActionTag", " item is found");
             CharSequence title = copyItem.getTitle();
-            Log.d("ActionTag", "item title found");
+//            Log.d("ActionTag", "item title found");
             menu.clear();
-            Log.d("ActionTag", " menu cleared");
+//            Log.d("ActionTag", " menu cleared");
             menu.add(0,android.R.id.copy, 0, title);
-            Log.d("ActionTag", "item added, try-catch finished");
+            menu.add(0,12345, 0, "Quote");
+
+//            Log.d("ActionTag", "item added, try-catch finished");
         }catch(Exception e){
             Log.d("ActionTag", "что-то пошло не так"+e.getMessage());
             e.printStackTrace();
@@ -37,7 +39,10 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
-            case android.R.id.copy:
+            case 12345:
+                try{
+
+                }
 
         }
         return false;
