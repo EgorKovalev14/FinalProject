@@ -22,17 +22,12 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
         Log.d("ActionTag", "onPrepareActionMode started");
         try{
- //           Log.d("ActionTag", " try-catch started");
             MenuItem copyItem=menu.findItem(android.R.id.copy);
-//            Log.d("ActionTag", " item is found");
             CharSequence title = copyItem.getTitle();
-//            Log.d("ActionTag", "item title found");
             menu.clear();
-//            Log.d("ActionTag", " menu cleared");
             menu.add(0,android.R.id.copy, 0, title);
             menu.add(0,12345, 0, "Quote");
 
-//            Log.d("ActionTag", "item added, try-catch finished");
         }catch(Exception e){
             Log.d("ActionTag", "что-то пошло не так"+e.getMessage());
             e.printStackTrace();
@@ -45,8 +40,15 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case 12345:
-                //dbQuotes.insert(actionMode.getTitle());
-                Log.d("DBTAG", String.valueOf(menuItem.getActionProvider()));
+                String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
+                        (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
+                String bookName = ReaderActivity.intent_file_path.toString().substring(ReaderActivity.intent_file_path.toString().
+                        lastIndexOf("/")+1,ReaderActivity.intent_file_path.toString().
+                        lastIndexOf(".") );
+                Log.d("DBTAG", quote+" "+bookName);
+                //dbQuotes.insert(quote, bookName);
+
+
 
         }
         return false;

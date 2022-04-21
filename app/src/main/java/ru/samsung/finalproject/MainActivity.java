@@ -1,28 +1,15 @@
 package ru.samsung.finalproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.ListActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -38,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (!PermissionUtils.hasPermissions(MainActivity.this)){
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
-// PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
         //в onCreate добавить if(intent)=>добавить элемент(после интента должно открываться приложение мейн активити)
