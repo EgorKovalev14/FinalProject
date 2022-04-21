@@ -40,9 +40,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case 12345:
-                try{
 
-                }
 
         }
         return false;

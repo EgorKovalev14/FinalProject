@@ -18,19 +18,20 @@ public class DBQuotes{
     private static final int NUM_COLUMN_TITLE = 1;
 
     private SQLiteDatabase mDataBase;
+    private OpenHelper mOpenHelper;
 
     public DBQuotes(Context context) {
-        OpenHelper mOpenHelper = new OpenHelper(context);
+        mOpenHelper = new OpenHelper(context);
         mDataBase = mOpenHelper.getWritableDatabase();
     }
 
-    public long insert(String quote) {
+
+    public long insert(String quote, String bookName){
+        mOpenHelper.createIfNotExist(bookName);
         ContentValues cv=new ContentValues();
         cv.put(COLUMN_TITLE, quote);
-        return mDataBase.insert(TABLE_NAME, null, cv);
+        return mDataBase.insert(bookName, null, cv);
     }
-
-
 
 
 private class OpenHelper extends SQLiteOpenHelper {
@@ -54,6 +55,10 @@ private class OpenHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
 
-
+        public void createIfNotExist(String bookName) {
+            mDataBase.execSQL("CREATE TABLE IF NOT EXISTS "+bookName + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TITLE + " TEXT); ");
+        }
     }
 }
