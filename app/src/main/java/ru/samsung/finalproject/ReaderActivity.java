@@ -68,7 +68,7 @@ public class ReaderActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         editText.setText(String.valueOf(str));
-        editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback());
+        editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
         editText.setShowSoftInputOnFocus(false);
 
 //        myTextView.setMovementMethod(new ScrollingMovementMethod());

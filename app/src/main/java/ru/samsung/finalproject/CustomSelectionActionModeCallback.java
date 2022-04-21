@@ -1,11 +1,16 @@
 package ru.samsung.finalproject;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class CustomSelectionActionModeCallback implements ActionMode.Callback {
+    DBQuotes dbQuotes;
+    public CustomSelectionActionModeCallback(Context context){
+         dbQuotes= new DBQuotes(context);
+    }
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         Log.d("ActionTag", "onCreateActionMode started");
@@ -40,7 +45,8 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case 12345:
-
+                //dbQuotes.insert(actionMode.getTitle());
+                Log.d("DBTAG", String.valueOf(menuItem.getActionProvider()));
 
         }
         return false;
