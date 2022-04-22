@@ -3,6 +3,7 @@ package ru.samsung.finalproject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 public class DBQuotes{
     private static final String DATABASE_NAME = "quotes.db";
@@ -22,7 +23,12 @@ public class DBQuotes{
 
     public DBQuotes(Context context) {
         mOpenHelper = new OpenHelper(context);
-        mDataBase = mOpenHelper.getWritableDatabase();
+        try {
+            mDataBase = mOpenHelper.getWritableDatabase();
+        }
+        catch (SQLiteException ex){
+            mDataBase = mOpenHelper.getReadableDatabase();
+        }
     }
 
 
