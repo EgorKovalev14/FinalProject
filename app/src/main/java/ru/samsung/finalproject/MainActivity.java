@@ -4,6 +4,7 @@ package ru.samsung.finalproject;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        Intent intent = getIntent();
+        try {
+            String name = intent.getDataString() ;
+            Log.d("INTENTAG", name);
+        }catch(Exception e){
+            Log.d("INTENTAG", e.getMessage());
+        }
     }
 
     @Override
