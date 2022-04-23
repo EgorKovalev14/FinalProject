@@ -40,15 +40,16 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case 12345:
-                String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
-                        (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
                 String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
                         lastIndexOf("/")+1,ReaderActivity.intent_file_path.
                         lastIndexOf(".") );
-                Log.d("DBTAG", quote+" "+bookName);
+                String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
+                        (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
 
-                dbQuotes.insert(quote, bookName);
-                dbQuotes.select(1);
+ //               Log.d("DBTAG", quote+" "+bookName);
+//                Log.d("DBTAG", int a = dbQuotes.insert(bookName, quote));
+                dbQuotes.insert(bookName, quote);
+                Log.d("DBTAG", dbQuotes.select(1).quote);
                 actionMode.finish();
 
 

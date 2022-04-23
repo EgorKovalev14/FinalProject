@@ -11,7 +11,7 @@ import android.util.Log;
 public class DBQuotes{
 
     private static final String DATABASE_NAME = "quotes.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_NAME = "Quotes";
 
     private static final String COLUMN_ID = "_id";
@@ -43,7 +43,7 @@ public class DBQuotes{
         ContentValues cv=new ContentValues();
         cv.put(COLUMN_BOOK, bookName);
         cv.put(COLUMN_TITLE, quote);
-        return mDataBase.insert(bookName, null, cv);
+        return mDataBase.insert(TABLE_NAME, null, cv);
     }
 
     public QuoteFromDB select(long id) {
