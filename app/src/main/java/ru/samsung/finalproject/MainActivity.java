@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
-        //в onCreate добавить if(intent)=>добавить элемент(после интента должно открываться приложение мейн активити)
+        //в onCreate добавить if(intent)=>добавить элемент(после интента должно открываться приложение мейн активити)(интент фильтр)
         books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
         books.add(new BookItem("Consp", false, "/Конспект.txt"));//для мобильного
         books.add(new BookItem("Конспект", false, "/Regex.cpp.txt"));//для мобильного
