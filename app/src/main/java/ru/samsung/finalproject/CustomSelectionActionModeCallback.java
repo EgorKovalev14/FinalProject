@@ -33,25 +33,25 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
             e.printStackTrace();
 
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
-            case 12345:
+            case android.R.id.copy:
                 String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
                         (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
-                String bookName = ReaderActivity.intent_file_path.toString().substring(ReaderActivity.intent_file_path.toString().
-                        lastIndexOf("/")+1,ReaderActivity.intent_file_path.toString().
+                String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
+                        lastIndexOf("/")+1,ReaderActivity.intent_file_path.
                         lastIndexOf(".") );
                 Log.d("DBTAG", quote+" "+bookName);
+
                 //dbQuotes.insert(quote, bookName);
 
 
-
         }
-        return false;
+        return true;
     }
 
     @Override
