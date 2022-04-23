@@ -39,7 +39,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
-            case android.R.id.copy:
+            case 12345:
                 String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
                         (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
                 String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
@@ -47,7 +47,9 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                         lastIndexOf(".") );
                 Log.d("DBTAG", quote+" "+bookName);
 
-                //dbQuotes.insert(quote, bookName);
+                dbQuotes.insert(quote, bookName);
+                dbQuotes.select(1);
+                actionMode.finish();
 
 
         }

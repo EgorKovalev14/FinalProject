@@ -2,21 +2,27 @@ package ru.samsung.finalproject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 public class DBQuotes{
+
     private static final String DATABASE_NAME = "quotes.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "Quotes";
 
-    // Название столбцов
     private static final String COLUMN_ID = "_id";
+    private static final String COLUMN_BOOK = "Book";
     private static final String COLUMN_TITLE = "Title";
 
-    // Номера столбцов
+
     private static final int NUM_COLUMN_ID = 0;
-    private static final int NUM_COLUMN_TITLE = 1;
+    private static final int NUM_COLUMN_BOOK = 1;
+    private static final int NUM_COLUMN_TITLE = 2;
+
 
     private SQLiteDatabase mDataBase;
     private OpenHelper mOpenHelper;
@@ -32,11 +38,21 @@ public class DBQuotes{
     }
 
 
-    public long insert(String quote, String bookName){
-        mOpenHelper.createIfNotExist(bookName);
+    public long insert(String bookName, String quote){
+//        mOpenHelper.createIfNotExist(bookName);
         ContentValues cv=new ContentValues();
+        cv.put(COLUMN_BOOK, bookName);
         cv.put(COLUMN_TITLE, quote);
         return mDataBase.insert(bookName, null, cv);
+    }
+
+    public QuoteFromDB select(long id) {
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+        mCursor.moveToFirst();
+        String book  = mCursor.getString(NUM_COLUMN_BOOK);
+        String title = mCursor.getString(NUM_COLUMN_TITLE);
+        return new QuoteFromDB(book, title);
+
     }
 
 
@@ -51,7 +67,7 @@ private class OpenHelper extends SQLiteOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String query = "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_BOOK + " TEXT," +
                     COLUMN_TITLE + " TEXT); ";
             db.execSQL(query);
         }
@@ -61,10 +77,10 @@ private class OpenHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
 
-        public void createIfNotExist(String bookName) {
-            mDataBase.execSQL("CREATE TABLE IF NOT EXISTS "+bookName + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_TITLE + " TEXT); ");
-        }
+//        public void createIfNotExist(String bookName) {
+//            mDataBase.execSQL("CREATE TABLE IF NOT EXISTS "+bookName + " (" +
+//                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    COLUMN_TITLE + " TEXT); ");
+//        }
     }
 }
