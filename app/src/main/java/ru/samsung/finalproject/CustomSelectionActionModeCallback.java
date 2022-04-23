@@ -1,6 +1,7 @@
 package ru.samsung.finalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 
 public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     DBQuotes dbQuotes;
+
     public CustomSelectionActionModeCallback(Context context){
          dbQuotes= new DBQuotes(context);
     }
@@ -49,7 +51,9 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
  //               Log.d("DBTAG", quote+" "+bookName);
 //                Log.d("DBTAG", int a = dbQuotes.insert(bookName, quote));
                 dbQuotes.insert(bookName, quote);
-                Log.d("DBTAG", dbQuotes.select(1).quote);
+//              Log.d("DBTAG", String.valueOf(dbQuotes.selectAll()));
+                Log.d("DBTAG", dbQuotes.select(5).quote);
+
                 actionMode.finish();
 
 

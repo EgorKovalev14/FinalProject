@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DBQuotes{
 
     private static final String DATABASE_NAME = "quotes.db";
@@ -53,6 +55,22 @@ public class DBQuotes{
         String title = mCursor.getString(NUM_COLUMN_TITLE);
         return new QuoteFromDB(book, title);
 
+    }
+
+    public ArrayList<QuoteFromDB> selectAll() {
+        Cursor mCursor = mDataBase.query(TABLE_NAME, null, null, null, null, null, null);
+
+        ArrayList<QuoteFromDB> arr = new ArrayList<QuoteFromDB>();
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            do {
+                long id = mCursor.getLong(NUM_COLUMN_ID);
+                String book = mCursor.getString(NUM_COLUMN_BOOK);
+                String title = mCursor.getString(NUM_COLUMN_TITLE);
+                arr.add(new QuoteFromDB(book, title));
+            } while (mCursor.moveToNext());
+        }
+        return arr;
     }
 
 

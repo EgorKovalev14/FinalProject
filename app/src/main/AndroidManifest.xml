@@ -91,6 +91,9 @@
             android:name=".PermissionUtils"
             tools:ignore="Instantiatable">
         </activity>
+        <activity
+            android:name=".QuoteActivity">
+        </activity>
 
 
     </application>
