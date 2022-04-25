@@ -8,4 +8,10 @@ public class QuoteFromDB {
         this.bookName = bookName;
         this.quote = quote;
     }
+
+    @Override
+    public String toString() {
+        return '\'' + quote + '\'' + " " + "-" + " " + bookName ;
+
+    }
 }

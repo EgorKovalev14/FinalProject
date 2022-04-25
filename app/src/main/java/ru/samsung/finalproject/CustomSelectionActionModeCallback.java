@@ -7,6 +7,8 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     DBQuotes dbQuotes;
 
@@ -51,8 +53,9 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
  //               Log.d("DBTAG", quote+" "+bookName);
 //                Log.d("DBTAG", int a = dbQuotes.insert(bookName, quote));
                 dbQuotes.insert(bookName, quote);
-//              Log.d("DBTAG", String.valueOf(dbQuotes.selectAll()));
-                Log.d("DBTAG", dbQuotes.select(5).quote);
+                for(int i = 0; i<dbQuotes.selectAll().size(); i++){
+                    Log.d("DBTAG", dbQuotes.selectAll().get(i).toString());
+                }
 
                 actionMode.finish();
 

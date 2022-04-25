@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DBQuotes{
 
     private static final String DATABASE_NAME = "quotes.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String TABLE_NAME = "Quotes";
 
     private static final String COLUMN_ID = "_id";
@@ -85,7 +85,8 @@ private class OpenHelper extends SQLiteOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String query = "CREATE TABLE " + TABLE_NAME + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_BOOK + " TEXT," +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_BOOK + " TEXT, " +
                     COLUMN_TITLE + " TEXT); ";
             db.execSQL(query);
         }

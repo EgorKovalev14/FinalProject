@@ -13,7 +13,9 @@
         android:typeface="monospace"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:gravity="fill"
+
         />
 
 </LinearLayout>
