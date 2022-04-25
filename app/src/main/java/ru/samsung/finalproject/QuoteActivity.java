@@ -20,8 +20,8 @@ public class QuoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quote_activity);
         dbQuotes = new DBQuotes(this);
-        ArrayList<QuoteItem> quotes = new ArrayList<>();
         listView = findViewById(R.id.quote_list);
+        ArrayList<QuoteItem> quotes = new ArrayList<>();
         for(int i = 0; i<dbQuotes.selectAll().size(); i++){
             quotes.add(new QuoteItem(dbQuotes.selectAll().get(i).toString()));
         }

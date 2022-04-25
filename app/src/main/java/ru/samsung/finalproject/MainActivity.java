@@ -20,13 +20,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     ListView listView;
+    DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        dbBooks = new DBBooks(this);
         if (!PermissionUtils.hasPermissions(MainActivity.this)) {
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
@@ -40,14 +41,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         if (getIntent().getData() != null) {
-            String path = getIntent().getData().getPath();
-            Log.d("My", "Path: " + path);
             String name = getCursorValue();
-            Log.d("My", "name: " + name);
+            dbBooks.insert(name);
             try {
+                for(int i = 0; i<dbBooks.selectAll().size(); i++){
+                    String b = dbBooks.selectAll().get(i).toString();
+                    books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b));
+                }
                 books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name));
             }catch(Exception e){
-                books.add(new BookItem(name, false, "/" + name));
             }
         }
     }

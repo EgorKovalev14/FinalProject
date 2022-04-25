@@ -50,12 +50,8 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                 String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
                         (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
 
- //               Log.d("DBTAG", quote+" "+bookName);
-//                Log.d("DBTAG", int a = dbQuotes.insert(bookName, quote));
                 dbQuotes.insert(bookName, quote);
-                for(int i = 0; i<dbQuotes.selectAll().size(); i++){
-                    Log.d("DBTAG", dbQuotes.selectAll().get(i).toString());
-                }
+
 
                 actionMode.finish();
 
