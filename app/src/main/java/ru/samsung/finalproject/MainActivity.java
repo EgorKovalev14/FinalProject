@@ -40,18 +40,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-        if (getIntent().getData() != null) {
-            String name = getCursorValue();
-            dbBooks.insert(name);
-            try {
-                for(int i = 0; i<dbBooks.selectAll().size(); i++){
-                    String b = dbBooks.selectAll().get(i).toString();
-                    books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b));
-                }
-                books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name));
-            }catch(Exception e){
+
+        try {
+
+            for(int i = 0; i<dbBooks.selectAll().size(); i++){
+                String b = dbBooks.selectAll().get(i).getBookFromDBName();
+                Log.d("myTag", b + " FROM DATABASE");
+                books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b));
             }
+            if (getIntent().getData() != null ) {
+                String name = getCursorValue();
+                Log.d("myTag", name);
+                books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name));
+                dbBooks.insert(name);
+            }
+        }catch(Exception e){
         }
+
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class DBBooks {
 
     private static final String DATABASE_NAME = "books.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 6;
     private static final String TABLE_NAME = "Books";
 
     private static final String COLUMN_ID = "_id";
@@ -45,8 +45,9 @@ public class DBBooks {
     public BookFromDB select(long id) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
         mCursor.moveToFirst();
+        int bid = mCursor.getInt(NUM_COLUMN_ID);
         String book = mCursor.getString(NUM_COLUMN_BOOK);
-        return new BookFromDB(book);
+        return new BookFromDB(bid, book);
 
     }
 
@@ -57,9 +58,9 @@ public class DBBooks {
         mCursor.moveToFirst();
         if (!mCursor.isAfterLast()) {
             do {
-                long id = mCursor.getLong(NUM_COLUMN_ID);
+                int id1 = mCursor.getInt(NUM_COLUMN_ID);
                 String book = mCursor.getString(NUM_COLUMN_BOOK);
-                arr.add(new BookFromDB(book));
+                arr.add(new BookFromDB(id1, book));
             } while (mCursor.moveToNext());
         }
         return arr;

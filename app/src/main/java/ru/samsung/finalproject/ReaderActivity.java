@@ -37,17 +37,15 @@ public class ReaderActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         file = Environment.getExternalStorageDirectory();
         file1 = new File(file, intent_file_path);
-        Log.d("TAQwerty", file1.toString()+ " " + file1.exists());
         try {
             in= new Scanner(file1);
-            Log.d("TAQwerty", "hasNext " + in.hasNext());
             while(in.hasNext()){
                 str.append(in.nextLine());
+                str.append(System.getProperty("line.separator"));
             }
             in.close();
         } catch (Exception e) {
               Log.d("TAQwerty", String.valueOf(e.getMessage()));
-              Log.d("TAQwerty", "что то пошло не так");
         }
         editText.setText(String.valueOf(str));
         editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));

@@ -96,10 +96,6 @@ private class OpenHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
 
-//        public void createIfNotExist(String bookName) {
-//            mDataBase.execSQL("CREATE TABLE IF NOT EXISTS "+bookName + " (" +
-//                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_TITLE + " TEXT); ");
-//        }
+
     }
 }
