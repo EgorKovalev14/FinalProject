@@ -41,7 +41,11 @@ public class DBBooks {
         cv.put(COLUMN_BOOK, bookName);
         return mDataBase.insert(TABLE_NAME, null, cv);
     }
-
+    public int update(BookFromDB bookFromDB) {
+        ContentValues cv=new ContentValues();
+        cv.put(COLUMN_BOOK, bookFromDB.getBookFromDBName());
+        return mDataBase.update(TABLE_NAME, cv, COLUMN_ID + " = ?",new String[] { String.valueOf(bookFromDB.getId())});
+    }
     public BookFromDB select(long id) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
         mCursor.moveToFirst();

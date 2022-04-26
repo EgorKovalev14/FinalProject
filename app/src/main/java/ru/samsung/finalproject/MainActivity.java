@@ -8,7 +8,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,13 +35,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         ArrayList<BookItem> books = new ArrayList<>();
         listView = findViewById(R.id.list);
-        //в onCreate добавить if(intent)=>добавить элемент(после интента должно открываться приложение мейн активити)(интент фильтр)
+        registerForContextMenu(listView);
         books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
-        books.add(new BookItem("Consp", false, "/Конспект.txt"));//для мобильного
-        books.add(new BookItem("Конспект", false, "/Regex.cpp.txt"));//для мобильного
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("LongClickTag", "onItemLongClick: ");
+                return true;
+            }
+        });
 
         try {
 
@@ -63,6 +70,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.reader_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.change_name:
+
+
+            case R.id.delete_book:
+
+
+            default: return super.onContextItemSelected(item);
+        }
     }
 
     @Override

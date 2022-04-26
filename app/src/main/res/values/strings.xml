@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">E-Book</string>
+    <string name="titleChangeName">Изменить название книги</string>
+    <string name="titleDeleteBook">Удалить книгу</string>
+
+
 </resources>
