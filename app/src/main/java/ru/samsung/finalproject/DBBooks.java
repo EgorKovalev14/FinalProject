@@ -35,6 +35,10 @@ public class DBBooks {
         }
     }
 
+    public void delete(long id) {
+        mDataBase.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
+    }
+
 
     public long insert(String bookName) {
         ContentValues cv = new ContentValues();

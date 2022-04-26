@@ -40,13 +40,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("LongClickTag", "onItemLongClick: ");
-                return true;
-            }
-        });
 
         try {
 
@@ -86,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             case R.id.delete_book:
-
+//                dbBooks.delete();
 
             default: return super.onContextItemSelected(item);
         }
