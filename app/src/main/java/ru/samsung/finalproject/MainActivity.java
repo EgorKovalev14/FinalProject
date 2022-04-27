@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ListView listView;
     DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
+    static ArrayList<BookItem> books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (!PermissionUtils.hasPermissions(MainActivity.this)) {
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
-        ArrayList<BookItem> books = new ArrayList<>();
+        books = new ArrayList<>();
         listView = findViewById(R.id.list);
         registerForContextMenu(listView);
-        books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
+        //books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
         BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             for(int i = 0; i<dbBooks.selectAll().size(); i++){
                 String b = dbBooks.selectAll().get(i).getBookFromDBName();
-                Log.d("myTag", b + " FROM DATABASE");
                 books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b));
             }
             if (getIntent().getData() != null ) {
@@ -86,7 +86,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             case R.id.delete_book:
-//                dbBooks.delete();
+                AdapterView.AdapterContextMenuInfo info1 = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Log.d("TAGQWERTY", info1.toString());
+                books.remove(info1.position);
+                dbBooks.delete(info1.position);
                 break;
         }return super.onContextItemSelected(item);
     }

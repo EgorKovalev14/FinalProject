@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import androidx.fragment.app.DialogFragment;
 
+import java.io.File;
+
 
 public class Dialog extends DialogFragment implements View.OnClickListener {
     EditText editText;
@@ -38,7 +40,9 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
             case R.id.buttonDialog1:
                 dismiss();
             case R.id.buttonDialog2:
-
+                File file = new File("storage/emulated/0/"+stringForEditText);
+                File newFile = new File("storage/emulated/0/"+editText.getText());
+                file.renameTo(newFile);
         }
     }
 }
