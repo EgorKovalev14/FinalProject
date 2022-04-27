@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DBQuotes{
 
     private static final String DATABASE_NAME = "quotes.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String TABLE_NAME = "Quotes";
 
     private static final String COLUMN_ID = "_id";
