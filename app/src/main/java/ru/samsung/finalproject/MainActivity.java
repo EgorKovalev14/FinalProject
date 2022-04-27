@@ -20,7 +20,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
+    Dialog dlg;
     ListView listView;
     DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
@@ -78,13 +78,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.change_name:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.d("INFOTAG", "id1:"+String.valueOf(info.position));
+                String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
+                dlg = new Dialog(s);
+                dlg.show(getSupportFragmentManager(), "dlg");
+
+                break;
 
 
             case R.id.delete_book:
 //                dbBooks.delete();
-
-            default: return super.onContextItemSelected(item);
-        }
+                break;
+        }return super.onContextItemSelected(item);
     }
 
     @Override
