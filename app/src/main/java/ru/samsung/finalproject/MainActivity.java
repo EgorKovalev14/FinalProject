@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("INFOTAG", "onCreate: ");
         dbBooks = new DBBooks(this);
         if (!PermissionUtils.hasPermissions(MainActivity.this)) {
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
@@ -78,9 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch(item.getItemId()){
             case R.id.change_name:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                View view = info.targetView;
-                Log.d("INFOTAG", "id:"+String.valueOf(view.getId()));
                 Log.d("INFOTAG", "id1:"+String.valueOf(info.position));
+
 
             case R.id.delete_book:
 //                dbBooks.delete();
