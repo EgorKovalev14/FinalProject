@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.d("INFOTAG", "id1:"+String.valueOf(info.position));
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
-                dlg = new Dialog(s);
+                dlg = new Dialog(s, info.position, getApplicationContext());
                 dlg.show(getSupportFragmentManager(), "dlg");
 
                 break;
