@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class DBBooks {
 
     private static final String DATABASE_NAME = "books.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String TABLE_NAME = "Books";
 
     private static final String COLUMN_ID = "_id";

@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
     static ArrayList<BookItem> books;
+    BaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         }
         books = new ArrayList<>();
+        adapter = new BookAdapter(this, books);
         listView = findViewById(R.id.list);
         registerForContextMenu(listView);
         //books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
-        BaseAdapter adapter = new BookAdapter(this, books);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d("TAGQWERTY", info1.toString());
                 books.remove(info1.position);
                 dbBooks.delete(info1.position+1);
+                adapter.notifyDataSetChanged();
+
                 break;
         }return super.onContextItemSelected(item);
     }
