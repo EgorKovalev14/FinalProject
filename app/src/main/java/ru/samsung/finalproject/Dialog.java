@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 public class Dialog extends DialogFragment implements View.OnClickListener {
@@ -21,6 +22,7 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
     Button btn2;
     String stringForEditText;
     DBBooks dbBooks;
+    BookFromDB bookFromDB;
     int element_id;
     Context context;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,8 +51,9 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
             case R.id.buttonDialog1:
                 dismiss();
             case R.id.buttonDialog2:
-                File file = new File("storage/emulated/0/"+stringForEditText);
-                File newFile = new File("storage/emulated/0/"+editText.getText()+".txt");
+                File file = new File("storage/emulated/0/"+stringForEditText+".txt");
+                File newFile = new File("storage/emulated/0/"+editText.getText().toString()+".txt");
+                Log.d("FILETAG", newFile.getPath());
                 Log.d("FILETAG", stringForEditText + " stringForEditText");
                 Log.d("FILETAG", editText.getText() + " editText.getText");
                 Log.d("FILETAG", "file.exists "+file.exists());
@@ -63,7 +66,13 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
                 MainActivity.books.get(element_id).setFilePath("/"+editText.getText());
-                //dbBooks.update()
+                bookFromDB = new BookFromDB(element_id,editText.getText().toString()+".txt");
+                dbBooks.update(bookFromDB);
+                ArrayList<BookFromDB> arrayList=dbBooks.selectAll();
+                for(int i = 0; i<arrayList.size();i++){
+                    Log.d("FILETAG", String.valueOf(arrayList.get(i)));
+                    Log.d("FILETAG", String.valueOf(arrayList.get(i).id));
+                }
                 dismiss();
         }
     }
