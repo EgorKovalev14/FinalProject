@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch(item.getItemId()){
             case R.id.change_name:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.d("INFOTAG", "id1:"+String.valueOf(info.position));
+                Log.d("INFOTAG", "id1:"+info.position);
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
                 dlg = new Dialog(s, info.position, getApplicationContext());
                 dlg.show(getSupportFragmentManager(), "dlg");
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 AdapterView.AdapterContextMenuInfo info1 = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.d("TAGQWERTY", info1.toString());
                 books.remove(info1.position);
-                dbBooks.delete(info1.position);
+                dbBooks.delete(info1.position+1);
                 break;
         }return super.onContextItemSelected(item);
     }

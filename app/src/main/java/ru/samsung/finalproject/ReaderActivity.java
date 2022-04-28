@@ -37,6 +37,7 @@ public class ReaderActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         file = Environment.getExternalStorageDirectory();
         file1 = new File(file, intent_file_path);
+        Log.d("FILETAG", file1.getAbsolutePath());
         try {
             in= new Scanner(file1);
             while(in.hasNext()){

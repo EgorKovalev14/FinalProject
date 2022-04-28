@@ -65,13 +65,13 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                     Toast.makeText(context,"Ошибка! Файл не был переименован!", Toast.LENGTH_LONG).show();
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
-                MainActivity.books.get(element_id).setFilePath("/"+editText.getText());
-                bookFromDB = new BookFromDB(element_id,editText.getText().toString()+".txt");
+                MainActivity.books.get(element_id).setFilePath("/"+editText.getText()+".txt");
+                bookFromDB = new BookFromDB(element_id+1,editText.getText().toString()+".txt");
                 dbBooks.update(bookFromDB);
                 ArrayList<BookFromDB> arrayList=dbBooks.selectAll();
                 for(int i = 0; i<arrayList.size();i++){
-                    Log.d("FILETAG", String.valueOf(arrayList.get(i)));
-                    Log.d("FILETAG", String.valueOf(arrayList.get(i).id));
+                    Log.d("FILETAG",arrayList.get(i)+"   "+ arrayList.get(i).id);
+                    Log.d("FILETAG", bookFromDB.bookFromDBName);
                 }
                 dismiss();
         }
