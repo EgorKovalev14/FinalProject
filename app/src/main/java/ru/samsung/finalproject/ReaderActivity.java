@@ -78,6 +78,8 @@ public class ReaderActivity extends AppCompatActivity {
         editor.putInt(SAVED_SCROLLX, scrollView.getScrollX());
         editor.putInt(SAVED_SCROLLY, scrollView.getScrollY());
         editor.commit();
+        Log.d("PREFTAG", "saveData");
+
     }
 
     void loadData() {
@@ -87,6 +89,7 @@ public class ReaderActivity extends AppCompatActivity {
         Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
         editText.setText(savedText);
         scrollView.scrollTo(savedScrollX, savedScrollY);
+        Log.d("PREFTAG", "loadData");
     }
     @Override
     protected void onDestroy() {
