@@ -53,11 +53,6 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
             case R.id.buttonDialog2:
                 File file = new File("storage/emulated/0/"+stringForEditText+".txt");
                 File newFile = new File("storage/emulated/0/"+editText.getText().toString()+".txt");
-                Log.d("FILETAG", newFile.getPath());
-                Log.d("FILETAG", stringForEditText + " stringForEditText");
-                Log.d("FILETAG", editText.getText() + " editText.getText");
-                Log.d("FILETAG", "file.exists "+file.exists());
-
                 if(file.renameTo(newFile)){
                     Toast.makeText(context,"Файл был успешно переименован!", Toast.LENGTH_LONG).show();
 
