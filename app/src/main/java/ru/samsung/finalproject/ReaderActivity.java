@@ -64,6 +64,11 @@ public class ReaderActivity extends AppCompatActivity {
         editText.setText(String.valueOf(str));
         editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
         editText.setShowSoftInputOnFocus(false);
+        Log.d("PREFTAG", "hasVisited " + String.valueOf(hasVisited));
+        Log.d("PREFTAG", "id_from_intent" + String.valueOf(id_from_intent));
+        if(hasVisited) {
+            Log.d("PREFTAG", "sharedPrefGetSavedId" + String.valueOf(sharedPreferences.getInt(SAVED_ID, 0)));
+        }
         if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
             Log.d("PREFTAG", "loadData");
             loadData();
