@@ -36,8 +36,8 @@ public class ReaderActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reader_activity);
-        SharedPreferences sp = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
-        boolean hasVisited = sp.getBoolean("hasVisited", false);
+        sharedPreferences = getPreferences(MODE_PRIVATE);
+        boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
         str = new StringBuilder();
         if (!PermissionUtils.hasPermissions(this)) {
             PermissionUtils.requestPermissions(this, MY_PERMISSION_REQUEST);
@@ -66,14 +66,14 @@ public class ReaderActivity extends AppCompatActivity {
         editText.setShowSoftInputOnFocus(false);
         Log.d("PREFTAG", "hasVisited " + String.valueOf(hasVisited));
         Log.d("PREFTAG", "id_from_intent" + String.valueOf(id_from_intent));
-        if(hasVisited) {
-            Log.d("PREFTAG", "sharedPrefGetSavedId" + String.valueOf(sharedPreferences.getInt(SAVED_ID, 0)));
-        }
+
         if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
             Log.d("PREFTAG", "loadData");
             loadData();
         }
-
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("hasVisited", true);
+        editor.commit();
 
 
     }
