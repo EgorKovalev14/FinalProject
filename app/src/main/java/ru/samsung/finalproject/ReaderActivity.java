@@ -68,8 +68,11 @@ public class ReaderActivity extends AppCompatActivity {
         Log.d("PREFTAG", "id_from_intent" + String.valueOf(id_from_intent));
 
         if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
-            Log.d("PREFTAG", "loadData");
-            loadData();
+            Integer savedScrollX = sharedPreferences.getInt(SAVED_SCROLLX, 0);
+            Log.d("PREFTAG", String.valueOf(savedScrollX));
+            Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
+            Log.d("PREFTAG", String.valueOf(savedScrollY));
+            scrollView.scrollTo(savedScrollX, savedScrollY);
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("hasVisited", true);
@@ -90,14 +93,15 @@ public class ReaderActivity extends AppCompatActivity {
         Log.d("PREFTAG", "saveData");
 
     }
-
-    void loadData() {
-        sharedPreferences = getPreferences(MODE_PRIVATE);
-        Integer savedScrollX = sharedPreferences.getInt(SAVED_SCROLLX, 0);
-        Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
-        scrollView.scrollTo(savedScrollX, savedScrollY);
-        Log.d("PREFTAG", "loadData");
-    }
+//    void loadData() {
+//        sharedPreferences = getPreferences(MODE_PRIVATE);
+//        Integer savedScrollX = sharedPreferences.getInt(SAVED_SCROLLX, 0);
+//        Log.d("PREFTAG", String.valueOf(savedScrollX));
+//        Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
+//        Log.d("PREFTAG", String.valueOf(savedScrollY));
+//        scrollView.scrollTo(savedScrollX, savedScrollY);
+//        Log.d("PREFTAG", "loadData");
+//    }
     @Override
     protected void onDestroy() {
         saveData();
