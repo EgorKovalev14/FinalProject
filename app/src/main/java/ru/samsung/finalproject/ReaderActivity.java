@@ -1,7 +1,5 @@
 package ru.samsung.finalproject;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,22 +13,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class ReaderActivity extends AppCompatActivity {
     public static String intent_file_path;
     public static EditText editText;
     SharedPreferences sharedPreferences;
     StringBuilder str;
-    ScrollView scrollView;
+    static ScrollView scrollView;
     File file;
     File file1;
     final static int MY_PERMISSION_REQUEST = 1;
     Scanner in;
     final String SAVED_ID = "ID";
-    final String SAVED_SCROLLX = "SCROLLX";
     final String SAVED_SCROLLY = "SCROLLY";
     Integer id_from_intent;
-    private static final String MY_SETTINGS = "my_settings";
+    static Integer savedScrollY;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,36 +57,59 @@ public class ReaderActivity extends AppCompatActivity {
                 str.append(System.getProperty("line.separator"));
             }
             in.close();
+            
         } catch (Exception e) {
             Log.d("TAQwerty", String.valueOf(e.getMessage()));
+        }
+
+        if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
+            Log.d("PREFTAG", "if started ");
+            savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
+            Log.d("PREFTAG", String.valueOf(savedScrollY));
+            MyThread myThread = new MyThread();
+            myThread.start();
         }
         editText.setText(String.valueOf(str));
         editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
         editText.setShowSoftInputOnFocus(false);
-        Log.d("PREFTAG", "hasVisited " + String.valueOf(hasVisited));
-        Log.d("PREFTAG", "id_from_intent" + String.valueOf(id_from_intent));
+        Log.d("PREFTAG", "hasVisited " + hasVisited);
+        Log.d("PREFTAG", "id_from_intent" + id_from_intent);
 
-        if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
-            Integer savedScrollX = sharedPreferences.getInt(SAVED_SCROLLX, 0);
-            Log.d("PREFTAG", String.valueOf(savedScrollX));
-            Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
-            Log.d("PREFTAG", String.valueOf(savedScrollY));
-            scrollView.scrollTo(savedScrollX, savedScrollY);
-        }
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("hasVisited", true);
         editor.commit();
 
 
     }
-
+    public static class MyThread extends Thread {
+        String s1;
+        String s2;
+        @Override
+        public void run() {
+            while(true) {
+                Log.d("PREFTAG", "run: ");
+                s1 = String.valueOf(editText.getText());
+                try {
+                    TimeUnit.MINUTES.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                s2 = String.valueOf(editText.getText());
+                if(s1!=s2){
+                    Log.d("PREFTAG", "run: if started ");
+                    scrollView.scrollTo(0, savedScrollY);
+                    break;
+                }
+            }
+        }
+    }
 
     void saveData() {
         sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(SAVED_ID,id_from_intent );
         Log.d("PREFTAG", String.valueOf(id_from_intent));
-        editor.putInt(SAVED_SCROLLX, scrollView.getScrollX());
         editor.putInt(SAVED_SCROLLY, scrollView.getScrollY());
         editor.commit();
         Log.d("PREFTAG", "saveData");
