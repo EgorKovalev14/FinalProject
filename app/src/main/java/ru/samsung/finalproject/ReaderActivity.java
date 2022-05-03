@@ -4,9 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.ScrollView;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class ReaderActivity extends AppCompatActivity {
     public static String intent_file_path;
@@ -59,6 +55,7 @@ public class ReaderActivity extends AppCompatActivity {
         Log.d("ReadFile", page);
         editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
         editText.setShowSoftInputOnFocus(false);
+        editText.setTextIsSelectable(true);
         Log.d("PREFTAG", "hasVisited " + hasVisited);
         Log.d("PREFTAG", "id_from_intent" + id_from_intent);
 

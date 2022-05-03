@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter = new BookAdapter(this, books);
         listView = findViewById(R.id.list);
         registerForContextMenu(listView);
-        //books.add(new BookItem("Code", false, "/Download/Test123.txt"));//для эмулятора
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
