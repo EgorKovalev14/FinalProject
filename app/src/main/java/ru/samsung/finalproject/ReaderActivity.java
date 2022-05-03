@@ -22,11 +22,8 @@ public class ReaderActivity extends AppCompatActivity {
     File file;
     File file1;
     final static int MY_PERMISSION_REQUEST = 1;
-    Scanner in;
     final String SAVED_ID = "ID";
-    final String SAVED_SCROLLY = "SCROLLY";
     Integer id_from_intent;
-    static Integer savedScrollY;
 
 
     @Override
