@@ -9,18 +9,26 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <EditText
+<!--        <EditText-->
+<!--            android:id="@+id/editText"-->
+<!--            android:paddingLeft="5dp"-->
+<!--            android:paddingRight="5dp"-->
+<!--            android:background="@null"-->
+<!--            android:textIsSelectable="true"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:gravity="fill" />-->
+        <ru.samsung.finalproject.MyEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:background="@null"
-            android:textIsSelectable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="fill" />
+            android:textIsSelectable="true" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

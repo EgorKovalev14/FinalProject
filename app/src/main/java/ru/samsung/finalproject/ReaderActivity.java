@@ -12,12 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ReaderActivity extends AppCompatActivity {
     public static String intent_file_path;
-    public static EditText editText;
+    public static MyEditText editText;
     SharedPreferences sharedPreferences;
     StringBuilder str;
     static ScrollView scrollView;
@@ -129,4 +132,41 @@ public class ReaderActivity extends AppCompatActivity {
         saveData();
         super.onDestroy();
     }
+    private List<String> readFile(String name){
+        File storageDirectory = Environment.getExternalStorageDirectory();
+        File downloadDirectory = new File(storageDirectory, "Download");
+        File file = new File(downloadDirectory, name);
+        if (file.exists() && file.canRead()){
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(file);
+                int line = 0;
+                List<String> pages = new ArrayList<>();
+                String page = "";
+                while (scanner.hasNext()){
+                    page += scanner.nextLine()+"\n";
+                    line++;
+                    if (line > 20){
+                        pages.add(page);
+                        page = "";
+                        line = 0;
+                    }
+                }
+                scanner.close();
+                Log.d("ReadFile", "read file OK");
+                return pages;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+        } else {
+            return null;
+        }
+    }
+
+    private String readPage(List<String> pages, int page){
+        return pages.get(page);
+    }
 }
+
