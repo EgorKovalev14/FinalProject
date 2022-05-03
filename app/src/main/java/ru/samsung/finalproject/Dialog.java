@@ -51,8 +51,8 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
             case R.id.buttonDialog1:
                 dismiss();
             case R.id.buttonDialog2:
-                File file = new File("storage/emulated/0/"+stringForEditText+".txt");
-                File newFile = new File("storage/emulated/0/"+editText.getText().toString()+".txt");
+                File file = new File("storage/emulated/0/Download/"+stringForEditText+".txt");
+                File newFile = new File("storage/emulated/0/Download/"+editText.getText().toString()+".txt");
                 if(file.renameTo(newFile)){
                     Toast.makeText(context,"Файл был успешно переименован!", Toast.LENGTH_LONG).show();
 
@@ -60,7 +60,7 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                     Toast.makeText(context,"Ошибка! Файл не был переименован!", Toast.LENGTH_LONG).show();
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
-                MainActivity.books.get(element_id).setFilePath("/"+editText.getText()+".txt");
+                MainActivity.books.get(element_id).setFilePath("/Download/"+editText.getText()+".txt");
                 bookFromDB = new BookFromDB(element_id+1,editText.getText().toString()+".txt");
                 dbBooks.update(bookFromDB);
                 ArrayList<BookFromDB> arrayList=dbBooks.selectAll();

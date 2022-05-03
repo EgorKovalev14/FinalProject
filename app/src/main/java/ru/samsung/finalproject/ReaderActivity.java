@@ -23,7 +23,6 @@ public class ReaderActivity extends AppCompatActivity {
     public static MyEditText editText;
     SharedPreferences sharedPreferences;
     StringBuilder str;
-    static ScrollView scrollView;
     File file;
     File file1;
     final static int MY_PERMISSION_REQUEST = 1;
@@ -49,30 +48,15 @@ public class ReaderActivity extends AppCompatActivity {
         intent_file_path = (String) getIntent().getSerializableExtra("INTENT_FILE_PATH");
         id_from_intent = (Integer) getIntent().getSerializableExtra("INTENT_ID");
         editText = findViewById(R.id.editText);
-        scrollView = findViewById(R.id.scrollView);
         file = Environment.getExternalStorageDirectory();
         file1 = new File(file, intent_file_path);
-        Log.d("FILETAG", file1.getAbsolutePath());
-        try {
-            in = new Scanner(file1);
-            while (in.hasNext()) {
-                str.append(in.nextLine());
-                str.append(System.getProperty("line.separator"));
-            }
-            in.close();
-            
-        } catch (Exception e) {
-            Log.d("TAQwerty", String.valueOf(e.getMessage()));
-        }
-
-        if(hasVisited && id_from_intent==sharedPreferences.getInt(SAVED_ID, 0)){
-            Log.d("PREFTAG", "if started ");
-            savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
-            Log.d("PREFTAG", String.valueOf(savedScrollY));
-            MyThread myThread = new MyThread();
-            myThread.start();
-        }
-        editText.setText(String.valueOf(str));
+        List<String> pages = readFile(file1.getName());
+        Log.d("ReadFile", "file1.name = "+file1.getName());
+        String page = readPage(pages, 0);
+        editText.setText(pages, 0);
+        Log.d("ReadFile", "text input");
+        Log.d("ReadFile", "string size: " + pages.size());
+        Log.d("ReadFile", page);
         editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
         editText.setShowSoftInputOnFocus(false);
         Log.d("PREFTAG", "hasVisited " + hasVisited);
@@ -85,35 +69,12 @@ public class ReaderActivity extends AppCompatActivity {
 
 
     }
-    public static class MyThread extends Thread {
-        String s1;
-        String s2;
-        @Override
-        public void run() {
-            while(true) {
-                Log.d("PREFTAG", "run: ");
-                s1 = String.valueOf(editText.getText());
-                try {
-                    TimeUnit.MINUTES.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                s2 = String.valueOf(editText.getText());
-                if(s1!=s2){
-                    Log.d("PREFTAG", "run: if started ");
-                    scrollView.scrollTo(0, savedScrollY);
-                    break;
-                }
-            }
-        }
-    }
 
     void saveData() {
         sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(SAVED_ID,id_from_intent );
         Log.d("PREFTAG", String.valueOf(id_from_intent));
-        editor.putInt(SAVED_SCROLLY, scrollView.getScrollY());
         editor.commit();
         Log.d("PREFTAG", "saveData");
 
