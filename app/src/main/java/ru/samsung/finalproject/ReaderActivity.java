@@ -4,19 +4,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ReaderActivity extends AppCompatActivity {
     public static String intent_file_path;
-    public static MyEditText editText;
     SharedPreferences sharedPreferences;
     StringBuilder str;
     File file;
@@ -24,12 +26,15 @@ public class ReaderActivity extends AppCompatActivity {
     final static int MY_PERMISSION_REQUEST = 1;
     final String SAVED_ID = "ID";
     Integer id_from_intent;
+    static ListView listView;
+    BaseAdapter adapter;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reader_activity);
+        listView=findViewById(R.id.reader_list);
         sharedPreferences = getPreferences(MODE_PRIVATE);
         boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
         str = new StringBuilder();
@@ -40,19 +45,18 @@ public class ReaderActivity extends AppCompatActivity {
         }
         intent_file_path = (String) getIntent().getSerializableExtra("INTENT_FILE_PATH");
         id_from_intent = (Integer) getIntent().getSerializableExtra("INTENT_ID");
-        editText = findViewById(R.id.editText);
         file = Environment.getExternalStorageDirectory();
         file1 = new File(file, intent_file_path);
-        List<String> pages = readFile(file1.getName());
+        ArrayList<ReaderItem> pages = readFile(file1.getName());
+        adapter = new ReaderAdapter(this,pages);
+
+        listView.setAdapter(adapter);
         Log.d("ReadFile", "file1.name = "+file1.getName());
         String page = readPage(pages, 0);
-        editText.setText(pages, 0);
         Log.d("ReadFile", "text input");
         Log.d("ReadFile", "string size: " + pages.size());
         Log.d("ReadFile", page);
-        editText.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(this));
-        editText.setShowSoftInputOnFocus(false);
-        editText.setTextIsSelectable(true);
+
         Log.d("PREFTAG", "hasVisited " + hasVisited);
         Log.d("PREFTAG", "id_from_intent" + id_from_intent);
 
@@ -87,7 +91,7 @@ public class ReaderActivity extends AppCompatActivity {
         saveData();
         super.onDestroy();
     }
-    private List<String> readFile(String name){
+    private ArrayList<ReaderItem> readFile(String name){
         File storageDirectory = Environment.getExternalStorageDirectory();
         File downloadDirectory = new File(storageDirectory, "Download");
         File file = new File(downloadDirectory, name);
@@ -96,13 +100,13 @@ public class ReaderActivity extends AppCompatActivity {
             try {
                 scanner = new Scanner(file);
                 int line = 0;
-                List<String> pages = new ArrayList<>();
+                ArrayList<ReaderItem> pages = new ArrayList<>();
                 String page = "";
                 while (scanner.hasNext()){
                     page += scanner.nextLine()+"\n";
                     line++;
-                    if (line > 20){
-                        pages.add(page);
+                    if (line > 19){
+                        pages.add(new ReaderItem(page));
                         page = "";
                         line = 0;
                     }
@@ -120,8 +124,8 @@ public class ReaderActivity extends AppCompatActivity {
         }
     }
 
-    private String readPage(List<String> pages, int page){
-        return pages.get(page);
+    private String readPage(ArrayList<ReaderItem> pages, int page){
+        return pages.get(page).getReadable();
     }
 }
 

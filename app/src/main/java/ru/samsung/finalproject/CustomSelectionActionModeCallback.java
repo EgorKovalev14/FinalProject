@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -47,10 +50,21 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                 String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
                         lastIndexOf("/")+1,ReaderActivity.intent_file_path.
                         lastIndexOf(".") );
-                String quote = String.valueOf(ReaderActivity.editText.getText().subSequence
-                        (ReaderActivity.editText.getSelectionStart(),ReaderActivity.editText.getSelectionEnd()));
+                Log.d("INFOTAG", String.valueOf(menuItem.getActionProvider()));
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
+                try {
+//                    TextView view = (TextView) info.targetView;
+                    TextView view = (TextView) ReaderAdapter.view;
+                    Log.d("INFOTAG", String.valueOf(view));
+                    String quote = String.valueOf(view.getText().subSequence
+                            (view.getSelectionStart(),view.getSelectionEnd()));
+                    Log.d("INFOTAG", quote);
 
-                dbQuotes.insert(bookName, quote);
+                    dbQuotes.insert(bookName, quote);
+
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
 
 
                 actionMode.finish();
@@ -64,4 +78,5 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public void onDestroyActionMode(ActionMode actionMode) {
 
     }
-}
+
+  }
