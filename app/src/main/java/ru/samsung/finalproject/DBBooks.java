@@ -12,16 +12,15 @@ import java.util.ArrayList;
 public class DBBooks {
 
     private static final String DATABASE_NAME = "books.db";
+
     private static final int DATABASE_VERSION = 14;
     private static final String TABLE_NAME = "Books";
 
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_BOOK = "BookName";
 
-
     private static final int NUM_COLUMN_ID = 0;
     private static final int NUM_COLUMN_BOOK = 1;
-
 
     private SQLiteDatabase mDataBase;
     private OpenHelper mOpenHelper;
