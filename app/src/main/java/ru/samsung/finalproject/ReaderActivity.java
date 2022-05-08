@@ -28,6 +28,7 @@ public class ReaderActivity extends AppCompatActivity {
     Integer id_from_intent;
     static ListView listView;
     BaseAdapter adapter;
+    DBProgress dbProgress;
 
 
     @Override
@@ -35,6 +36,7 @@ public class ReaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reader_activity);
         listView=findViewById(R.id.reader_list);
+        dbProgress=new DBProgress(this);
         sharedPreferences = getPreferences(MODE_PRIVATE);
         boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
         str = new StringBuilder();

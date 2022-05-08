@@ -17,10 +17,12 @@ public class DBProgress {
     private static final String P_TABLE_NAME = "Progress";
 
     private static final String P_COLUMN_ID = "_id";
+    private static final String P_COLUMN_BOOKNAME = "BookName";
     private static final String P_COLUMN_PROGRESS = "ListScroll" ;
 
     private static final int P_NUM_COLUMN_ID = 0;
-    private static final int P_NUM_COLUMN_SCROLL = 1;
+    private static final int P_NUM_COLUMN_BOOKNAME = 1;
+    private static final int P_NUM_COLUMN_SCROLL = 2;
 
     private SQLiteDatabase mDataBase;
     private OpenHelper mOpenHelper;
@@ -39,39 +41,42 @@ public class DBProgress {
     }
 
 
-    public long insert(int progress) {
+    public long insert(String book, int progress) {
         ContentValues cv = new ContentValues();
+        cv.put(P_COLUMN_BOOKNAME, book);
         cv.put(P_COLUMN_PROGRESS, progress);
         return mDataBase.insert(P_TABLE_NAME, null, cv);
     }
     public int update(ProgressFromDB progressFromDB) {
         ContentValues cv=new ContentValues();
         cv.put(P_COLUMN_PROGRESS, progressFromDB.getProgress());
+        cv.put(P_COLUMN_BOOKNAME,progressFromDB.getBook() );
         return mDataBase.update(P_TABLE_NAME, cv, P_COLUMN_ID + " = ?",new String[] { String.valueOf(progressFromDB.getId())});
     }
     public ProgressFromDB select(long id) {
         Cursor mCursor = mDataBase.query(P_TABLE_NAME, null, P_COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
         mCursor.moveToFirst();
         int bid = mCursor.getInt(P_NUM_COLUMN_ID);
+        String bookName = mCursor.getString((P_NUM_COLUMN_BOOKNAME));
         int prog = mCursor.getInt(P_NUM_COLUMN_SCROLL);
-        return new ProgressFromDB(bid, prog);
+        return new ProgressFromDB(bid,bookName, prog);
 
     }
 
-    public ArrayList<ProgressFromDB> selectAll() {
-        Cursor mCursor = mDataBase.query(P_TABLE_NAME, null, null, null, null, null, null);
-
-        ArrayList<ProgressFromDB> arr = new ArrayList<ProgressFromDB>();
-        mCursor.moveToFirst();
-        if (!mCursor.isAfterLast()) {
-            do {
-                int id1 = mCursor.getInt(P_NUM_COLUMN_ID);
-                int prog = mCursor.getInt(P_NUM_COLUMN_SCROLL);
-                arr.add(new ProgressFromDB(id1, prog));
-            } while (mCursor.moveToNext());
-        }
-        return arr;
-    }
+//    public ArrayList<ProgressFromDB> selectAll() {
+//        Cursor mCursor = mDataBase.query(P_TABLE_NAME, null, null, null, null, null, null);
+//
+//        ArrayList<ProgressFromDB> arr = new ArrayList<ProgressFromDB>();
+//        mCursor.moveToFirst();
+//        if (!mCursor.isAfterLast()) {
+//            do {
+//                int id1 = mCursor.getInt(P_NUM_COLUMN_ID);
+//                int prog = mCursor.getInt(P_NUM_COLUMN_SCROLL);
+//                arr.add(new ProgressFromDB(id1, prog));
+//            } while (mCursor.moveToNext());
+//        }
+//        return arr;
+//    }
 
 
     private class OpenHelper extends SQLiteOpenHelper {
