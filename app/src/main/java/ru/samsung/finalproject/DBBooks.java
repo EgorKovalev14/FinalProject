@@ -59,13 +59,16 @@ public class DBBooks {
     }
     public BookFromDB select(long id) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
-        mCursor.moveToFirst();
-        int bid = mCursor.getInt(NUM_COLUMN_ID);
-        String book = mCursor.getString(NUM_COLUMN_BOOK);
-        int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
-        int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
-        return new BookFromDB(bid, book, content_id, scroll);
-
+        if(mCursor.moveToFirst()) {
+            mCursor.moveToFirst();
+            int bid = mCursor.getInt(NUM_COLUMN_ID);
+            String book = mCursor.getString(NUM_COLUMN_BOOK);
+            int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
+            int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
+            return new BookFromDB(bid, book, content_id, scroll);
+        }else{
+            return null;
+        }
     }
 
     public ArrayList<BookFromDB> selectAll() {
