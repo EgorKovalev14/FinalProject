@@ -35,7 +35,7 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
         editText.setHint(stringForEditText);
-        dbBooks = new DBBooks(context);
+        dbBooks = MainActivity.dbBooks;
         return v;
     }
 

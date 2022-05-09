@@ -22,10 +22,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     Dialog dlg;
     ListView listView;
-    DBBooks dbBooks;
+    static DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
     static ArrayList<BookItem> books;
     BaseAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
