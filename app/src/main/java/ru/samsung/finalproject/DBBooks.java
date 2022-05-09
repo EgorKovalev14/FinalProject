@@ -18,9 +18,15 @@ public class DBBooks {
 
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_BOOK = "BookName";
+    private static final String COLUMN_CONTENT_ID = "ContentId";
+    private static final String COLUMN_SCROLL = "Scroll";
 
     private static final int NUM_COLUMN_ID = 0;
     private static final int NUM_COLUMN_BOOK = 1;
+    private static final int NUM_COLUMN_CONTENT_ID = 2;
+    private static final int NUM_COLUMN_SCROLL = 3;
+
+
 
     private SQLiteDatabase mDataBase;
     private OpenHelper mOpenHelper;
@@ -39,9 +45,11 @@ public class DBBooks {
     }
 
 
-    public long insert(String bookName) {
+    public long insert(String bookName, int content_id, int scroll) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_BOOK, bookName);
+        cv.put(COLUMN_CONTENT_ID, content_id);
+        cv.put(COLUMN_SCROLL, scroll);
         return mDataBase.insert(TABLE_NAME, null, cv);
     }
     public int update(BookFromDB bookFromDB) {
@@ -54,7 +62,9 @@ public class DBBooks {
         mCursor.moveToFirst();
         int bid = mCursor.getInt(NUM_COLUMN_ID);
         String book = mCursor.getString(NUM_COLUMN_BOOK);
-        return new BookFromDB(bid, book);
+        int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
+        int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
+        return new BookFromDB(bid, book, content_id, scroll);
 
     }
 
@@ -67,7 +77,9 @@ public class DBBooks {
             do {
                 int id1 = mCursor.getInt(NUM_COLUMN_ID);
                 String book = mCursor.getString(NUM_COLUMN_BOOK);
-                arr.add(new BookFromDB(id1, book));
+                int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
+                int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
+                arr.add(new BookFromDB(id1, book, content_id, scroll));
             } while (mCursor.moveToNext());
         }
         return arr;
@@ -86,7 +98,7 @@ public class DBBooks {
         public void onCreate(SQLiteDatabase db) {
             String query = "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_BOOK + " TEXT);";
+                    COLUMN_BOOK + " TEXT, " + COLUMN_CONTENT_ID + " INTEGER, " + COLUMN_SCROLL + " INTEGER);";
             db.execSQL(query);
         }
 

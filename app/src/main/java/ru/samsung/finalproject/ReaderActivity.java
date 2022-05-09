@@ -24,11 +24,9 @@ public class ReaderActivity extends AppCompatActivity {
     File file;
     File file1;
     final static int MY_PERMISSION_REQUEST = 1;
-    final String SAVED_ID = "ID";
     Integer id_from_intent;
     static ListView listView;
     BaseAdapter adapter;
-    DBProgress dbProgress;
 
 
     @Override
@@ -36,7 +34,6 @@ public class ReaderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reader_activity);
         listView=findViewById(R.id.reader_list);
-        dbProgress=new DBProgress(this);
         sharedPreferences = getPreferences(MODE_PRIVATE);
         boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
         str = new StringBuilder();
@@ -53,41 +50,19 @@ public class ReaderActivity extends AppCompatActivity {
         adapter = new ReaderAdapter(this,pages);
 
         listView.setAdapter(adapter);
-        Log.d("ReadFile", "file1.name = "+file1.getName());
-        String page = readPage(pages, 0);
-        Log.d("ReadFile", "text input");
-        Log.d("ReadFile", "string size: " + pages.size());
-        Log.d("ReadFile", page);
-
-        Log.d("PREFTAG", "hasVisited " + hasVisited);
-        Log.d("PREFTAG", "id_from_intent" + id_from_intent);
 
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("hasVisited", true);
-        editor.commit();
 
 
     }
 
     void saveData() {
-        sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(SAVED_ID,id_from_intent );
-        Log.d("PREFTAG", String.valueOf(id_from_intent));
-        editor.commit();
-        Log.d("PREFTAG", "saveData");
+
 
     }
-//    void loadData() {
-//        sharedPreferences = getPreferences(MODE_PRIVATE);
-//        Integer savedScrollX = sharedPreferences.getInt(SAVED_SCROLLX, 0);
-//        Log.d("PREFTAG", String.valueOf(savedScrollX));
-//        Integer savedScrollY = sharedPreferences.getInt(SAVED_SCROLLY, 0);
-//        Log.d("PREFTAG", String.valueOf(savedScrollY));
-//        scrollView.scrollTo(savedScrollX, savedScrollY);
-//        Log.d("PREFTAG", "loadData");
-//    }
+    void loadData() {
+
+    }
     @Override
     protected void onDestroy() {
         saveData();

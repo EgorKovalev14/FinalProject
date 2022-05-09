@@ -61,7 +61,7 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
                 MainActivity.books.get(element_id).setFilePath("/Download/"+editText.getText()+".txt");
-                bookFromDB = new BookFromDB(element_id+1,editText.getText().toString()+".txt");
+                bookFromDB = new BookFromDB(element_id+1,editText.getText().toString()+".txt", MainActivity.books.get(element_id).getContent_id(), MainActivity.books.get(element_id).getScroll() );
                 dbBooks.update(bookFromDB);
                 ArrayList<BookFromDB> arrayList=dbBooks.selectAll();
                 for(int i = 0; i<arrayList.size();i++){

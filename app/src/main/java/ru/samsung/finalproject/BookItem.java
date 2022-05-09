@@ -4,11 +4,16 @@ public class BookItem {
     String name;
     boolean read;
     String filePath;
+    int content_id;
+    int scroll;
 
-    public BookItem(String name, boolean read, String filePath) {
+    public BookItem(String name, boolean read, String filePath, int content_id, int scroll) {
         this.name = name;
         this.read = read;
         this.filePath = filePath;
+        this.content_id = content_id;
+        this.scroll=scroll;
+
     }
 
     public String getName() {
@@ -35,4 +40,11 @@ public class BookItem {
         this.filePath = filePath;
     }
 
+    public int getContent_id() {
+        return content_id;
+    }
+
+    public int getScroll() {
+        return scroll;
+    }
 }

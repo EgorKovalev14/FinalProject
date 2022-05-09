@@ -2,10 +2,10 @@ package ru.samsung.finalproject;
 
 public class ProgressFromDB {
     int id;
-    String book;
+    int book;
     int progress;
 
-    public ProgressFromDB(int id, String book, int progress) {
+    public ProgressFromDB(int id, int book, int progress) {
         this.id = id;
         this.book= book;
         this.progress = progress;
@@ -27,7 +27,7 @@ public class ProgressFromDB {
         this.progress = progress;
     }
 
-    public String getBook() {
+    public Integer getBook() {
         return book;
     }
 }
