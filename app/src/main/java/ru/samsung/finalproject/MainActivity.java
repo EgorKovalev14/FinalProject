@@ -53,11 +53,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b,a,c ));
             }
             if (getIntent().getData() != null ) {
+                Log.d("MYTAG", "intent " + getIntent().getData().toString());
                 String name = getCursorValue();
                 Integer content_id = Integer.valueOf(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/")+1));
                 int scroll = -1;
-                Log.d("myTag", name);
-                Log.d("myTag", "content_id" + content_id);
+                Log.d("MYTAG", "intent " + getIntent().getData().toString());
+                Log.d("MYTAG", "name " + name);
+                Log.d("MYTAG", "content_id" + content_id);
                 books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name, content_id,scroll ));
                 dbBooks.insert(name, content_id, scroll);
             }
