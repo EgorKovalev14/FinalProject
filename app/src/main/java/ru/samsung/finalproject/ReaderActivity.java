@@ -27,6 +27,11 @@ public class ReaderActivity extends AppCompatActivity {
     Integer id_from_intent;
     static ListView listView;
     BaseAdapter adapter;
+    DBBooks dbBooks;
+    int scroll;
+    String name;
+    int content_id;
+
 
 
     @Override
@@ -44,12 +49,17 @@ public class ReaderActivity extends AppCompatActivity {
         }
         intent_file_path = (String) getIntent().getSerializableExtra("INTENT_FILE_PATH");
         id_from_intent = (Integer) getIntent().getSerializableExtra("INTENT_ID");
+        content_id = (Integer) getIntent().getSerializableExtra("CONTENT_ID");
+        scroll = dbBooks.selectBookByContent(content_id).getScroll();
+        name=(String) getIntent().getSerializableExtra("NAME");
         file = Environment.getExternalStorageDirectory();
         file1 = new File(file, intent_file_path);
         ArrayList<ReaderItem> pages = readFile(file1.getName());
         adapter = new ReaderAdapter(this,pages);
 
         listView.setAdapter(adapter);
+        dbBooks=new DBBooks(this);
+        loadData();
 
 
 
@@ -57,10 +67,14 @@ public class ReaderActivity extends AppCompatActivity {
     }
 
     void saveData() {
-
-
+        BookFromDB bookFromDB = new BookFromDB(id_from_intent, name, content_id, listView.getScrollY() );
+        dbBooks.update(bookFromDB);
     }
     void loadData() {
+        if(scroll!=-1){
+            listView.scrollTo(0,scroll);
+
+        }
 
     }
     @Override

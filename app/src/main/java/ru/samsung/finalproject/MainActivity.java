@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(MainActivity.this, ReaderActivity.class);
         intent.putExtra("INTENT_FILE_PATH", intent_file_path);
         intent.putExtra("INTENT_ID", i);
+        intent.putExtra("CONTENT_ID", info.getContent_id() );
+        intent.putExtra("NAME", info.getName());
         startActivity(intent);
     }
 

@@ -50,7 +50,6 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                 String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
                         lastIndexOf("/")+1,ReaderActivity.intent_file_path.
                         lastIndexOf(".") );
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo();
                 try {
                     TextView view = (TextView) ReaderAdapter.view;
                     String quote = String.valueOf(view.getText().subSequence
@@ -59,7 +58,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                     dbQuotes.insert(bookName, quote);
 
                 }catch(NullPointerException e){
-                    e.printStackTrace();
+                    Log.d("INFOTAG", e.getMessage());
                 }
 
 
