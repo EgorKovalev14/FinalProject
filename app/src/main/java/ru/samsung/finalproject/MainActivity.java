@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     Dialog dlg;
     ListView listView;
-    static DBBooks dbBooks;
+    DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
     static ArrayList<BookItem> books;
     BaseAdapter adapter;
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d("INFOTAG", "id1:"+info.position);
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
                 dlg = new Dialog(s, info.position, getApplicationContext());
+                dlg.setDbBooks(dbBooks);
                 dlg.show(getSupportFragmentManager(), "dlg");
 
                 break;

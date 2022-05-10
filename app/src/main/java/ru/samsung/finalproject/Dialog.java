@@ -25,6 +25,11 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
     BookFromDB bookFromDB;
     int element_id;
     Context context;
+
+    public void setDbBooks(DBBooks dbBooks) {
+        this.dbBooks = dbBooks;
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().setTitle("Изменение названия");
@@ -35,7 +40,8 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
         editText.setHint(stringForEditText);
-        dbBooks = MainActivity.dbBooks;
+        dbBooks = new DBBooks(context);
+        
         return v;
     }
 

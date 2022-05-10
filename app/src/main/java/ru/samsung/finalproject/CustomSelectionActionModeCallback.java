@@ -33,7 +33,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
             CharSequence title = copyItem.getTitle();
             menu.clear();
             menu.add(0,android.R.id.copy, 0, title);
-            menu.add(0,12345, 0, "Quote");
+            menu.add(0,12345, 0, "Цитата");
 
         }catch(Exception e){
             Log.d("ActionTag", "что-то пошло не так"+e.getMessage());
