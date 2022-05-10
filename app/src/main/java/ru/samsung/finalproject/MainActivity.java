@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     static ArrayList<BookItem> books;
     BaseAdapter adapter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             if (getIntent().getData() != null ) {
                 String name = getCursorValue();
-                Integer content_id = Integer.valueOf(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/")));
+                Integer content_id = Integer.valueOf(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/")+1));
                 int scroll = -1;
                 Log.d("myTag", name);
                 Log.d("myTag", "content_id" + content_id);
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 dbBooks.insert(name, content_id, scroll);
             }
         }catch(Exception e){
+            Log.d("MYTAG", e.getMessage());
         }
 
     }
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d("INFOTAG", "id1:"+info.position);
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
                 dlg = new Dialog(s, info.position, getApplicationContext());
+                dlg.setDbBooks(dbBooks);
                 dlg.show(getSupportFragmentManager(), "dlg");
 
                 break;
