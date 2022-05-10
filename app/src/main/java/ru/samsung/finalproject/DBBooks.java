@@ -55,6 +55,8 @@ public class DBBooks {
     public int update(BookFromDB bookFromDB) {
         ContentValues cv=new ContentValues();
         cv.put(COLUMN_BOOK, bookFromDB.getBookFromDBName());
+        cv.put(COLUMN_CONTENT_ID, bookFromDB.getContent_id());
+        cv.put(COLUMN_SCROLL, bookFromDB.getScroll());
         return mDataBase.update(TABLE_NAME, cv, COLUMN_ID + " = ?",new String[] { String.valueOf(bookFromDB.getId())});
     }
     public BookFromDB select(long id) {
