@@ -16,7 +16,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     DBQuotes dbQuotes;
 
     public CustomSelectionActionModeCallback(Context context){
-         dbQuotes= new DBQuotes(context);
+        dbQuotes= new DBQuotes(context);
     }
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -47,9 +47,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch(menuItem.getItemId()){
             case 12345:
-                String bookName = ReaderActivity.intent_file_path.substring(ReaderActivity.intent_file_path.
-                        lastIndexOf("/")+1,ReaderActivity.intent_file_path.
-                        lastIndexOf(".") );
+                String bookName = ReaderActivity.bookItem.getName();
                 try {
                     TextView view = (TextView) ReaderAdapter.view;
                     String quote = String.valueOf(view.getText().subSequence
@@ -60,11 +58,7 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
                 }catch(NullPointerException e){
                     Log.d("INFOTAG", e.getMessage());
                 }
-
-
                 actionMode.finish();
-
-
         }
         return true;
     }
@@ -74,4 +68,4 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
 
     }
 
-  }
+}

@@ -4,7 +4,9 @@ package ru.samsung.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,9 +28,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
     static ArrayList<BookItem> books;
-    BaseAdapter adapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,37 +36,60 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dbBooks = new DBBooks(this);
         if (!PermissionUtils.hasPermissions(MainActivity.this)) {
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
+        } else {
+            getBooksList();
         }
+    }
+
+    private void getBooksList(){
         books = new ArrayList<>();
-        adapter = new BookAdapter(this, books);
         listView = findViewById(R.id.list);
         registerForContextMenu(listView);
-        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
 
         try {
-
-            for(int i = 0; i<dbBooks.selectAll().size(); i++){
-                String b = dbBooks.selectAll().get(i).getBookFromDBName();
-                int a= dbBooks.selectAll().get(i).getContent_id();
-                int c = dbBooks.selectAll().get(i).getScroll();
-                books.add(new BookItem(b.substring(0, b.lastIndexOf(".")), false, "/" + b,a,c ));
+            books = dbBooks.selectAll();
+            Log.d("MYTAG", "list size: " + books.size());
+            for(int i = 0; i<books.size(); i++){
+                BookItem item = books.get(i);
+                String b = item.getName();
+                item.setName(b.substring(0, b.lastIndexOf(".")));
+                item.setRead(false);
+                item.setFilePath("/" + b);
             }
+
             if (getIntent().getData() != null ) {
-                Log.d("MYTAG", "intent " + getIntent().getData().toString());
+                Log.d("MYTAG", "intent " + getIntent().getData());
                 String name = getCursorValue();
-                Integer content_id = Integer.valueOf(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/")+1));
-                int scroll = -1;
-                Log.d("MYTAG", "intent " + getIntent().getData().toString());
+                int content_id = Integer.parseInt(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/") + 1));
                 Log.d("MYTAG", "name " + name);
-                Log.d("MYTAG", "content_id" + content_id);
-                books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name, content_id,scroll ));
-                dbBooks.insert(name, content_id, scroll);
+                Log.d("MYTAG", "content_id " + content_id);
+
+                BookItem bookItem = findBookInList(content_id);
+                if (bookItem == null){
+                    int scroll = 0;
+                    books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name, content_id,scroll ));
+                    dbBooks.insert(name, content_id, scroll);
+                }
             }
         }catch(Exception e){
+            Log.d("MYTAG", "Ошибка чтения");
             Log.d("MYTAG", e.getMessage());
         }
 
+        BookAdapter adapter = new BookAdapter(this, books);
+        listView.setAdapter(adapter);
+    }
+
+    private BookItem findBookInList(int contentId){
+        boolean find = false;
+        for (int i = 0; i < books.size(); i++) {
+            BookItem bookItem = books.get(i);
+            if (bookItem.getContent_id() == contentId){
+                return bookItem;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -84,12 +107,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()){
             case R.id.change_name:
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Log.d("INFOTAG", "id1:"+info.position);
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
-                dlg = new Dialog(s, info.position, getApplicationContext());
+                dlg = new Dialog(s, info.position, getApplicationContext(), ((BookItem) listView.getAdapter().getItem(info.position)).getContent_id(),((BookItem)listView.getAdapter().getItem(info.position)).getScroll());
                 dlg.setDbBooks(dbBooks);
                 dlg.show(getSupportFragmentManager(), "dlg");
 
@@ -97,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             case R.id.delete_book:
-                AdapterView.AdapterContextMenuInfo info1 = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                Log.d("TAGQWERTY", info1.toString());
-                books.remove(info1.position);
-                dbBooks.delete(info1.position+1);
+                Log.d("TAGQWERTY", info.toString());
+                books.remove(info.position);
+                dbBooks.delete(info.position+1);
+                BookAdapter adapter = (BookAdapter) listView.getAdapter();
                 adapter.notifyDataSetChanged();
 
                 break;
@@ -124,7 +147,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             try {
                 cursor = getContentResolver().query(getIntent().getData(), new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null);
                 cursor.moveToFirst();
-                result = cursor.getColumnCount() > 0 ? cursor.getString(0) : null;
+                if (cursor.getColumnCount() > 0){
+                    result = cursor.getString(0);
+                }
             } catch (Exception e) {
                 Log.d("My", "cursor error: " + e.getMessage());
             } finally {
@@ -137,8 +162,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } catch (Exception e) {
             return null;
         }
+    }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
+                    getBooksList();
+                } else {
+                    Toast.makeText(this, "permission failed", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                return;
+            }
+        }
     }
 
     @Override
@@ -147,11 +187,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         BookItem info = (BookItem) adapterView.getAdapter().getItem(i);
         String intent_file_path = info.getFilePath();
         Intent intent = new Intent(MainActivity.this, ReaderActivity.class);
-        intent.putExtra("INTENT_FILE_PATH", intent_file_path);
-        intent.putExtra("INTENT_ID", i);
-        intent.putExtra("CONTENT_ID", info.getContent_id() );
-        intent.putExtra("NAME", info.getName());
+        intent.putExtra("Position", i);
         startActivity(intent);
     }
-
 }

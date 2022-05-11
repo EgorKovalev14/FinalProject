@@ -22,9 +22,11 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
     Button btn2;
     String stringForEditText;
     DBBooks dbBooks;
-    BookFromDB bookFromDB;
+    BookItem bookItem;
     int element_id;
     Context context;
+    int content_id;
+    int scroll;
 
     public void setDbBooks(DBBooks dbBooks) {
         this.dbBooks = dbBooks;
@@ -41,14 +43,16 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
         btn2.setOnClickListener(this);
         editText.setHint(stringForEditText);
         dbBooks = new DBBooks(context);
-        
+
         return v;
     }
 
-    public Dialog(String stringForEditText, int element_id, Context context) {
+    public Dialog(String stringForEditText, int element_id, Context context, int content_id, int scroll) {
         this.stringForEditText = stringForEditText;
         this.element_id = element_id;
         this.context = context;
+        this.content_id = content_id;
+        this.scroll=scroll;
     }
 
     @Override
@@ -67,12 +71,12 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
                 MainActivity.books.get(element_id).setFilePath("/Download/"+editText.getText()+".txt");
-                bookFromDB = new BookFromDB(element_id+1,editText.getText().toString()+".txt", MainActivity.books.get(element_id).getContent_id(), MainActivity.books.get(element_id).getScroll() );
-                dbBooks.update(bookFromDB);
-                ArrayList<BookFromDB> arrayList=dbBooks.selectAll();
+                bookItem = new BookItem(String.valueOf(editText.getText()), false,editText.getText().toString()+".txt",content_id,scroll);
+                dbBooks.update(bookItem);
+                ArrayList<BookItem> arrayList=dbBooks.selectAll();
                 for(int i = 0; i<arrayList.size();i++){
-                    Log.d("FILETAG",arrayList.get(i)+"   "+ arrayList.get(i).id);
-                    Log.d("FILETAG", bookFromDB.bookFromDBName);
+                    Log.d("FILETAG",arrayList.get(i)+"   "+ arrayList.get(i).getId());
+                    Log.d("FILETAG", bookItem.getName());
                 }
                 dismiss();
         }

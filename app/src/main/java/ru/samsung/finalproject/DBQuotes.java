@@ -74,8 +74,8 @@ public class DBQuotes{
     }
 
 
-private class OpenHelper extends SQLiteOpenHelper {
-    // Данные базы данных и таблиц
+    private class OpenHelper extends SQLiteOpenHelper {
+        // Данные базы данных и таблиц
 
 
         OpenHelper(Context context) {

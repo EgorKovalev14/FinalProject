@@ -17,12 +17,12 @@ public class DBBooks {
     private static final String TABLE_NAME = "Books";
 
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_BOOK = "BookName";
+    private static final String COLUMN_NAME = "BookName";
     private static final String COLUMN_CONTENT_ID = "ContentId";
     private static final String COLUMN_SCROLL = "Scroll";
 
     private static final int NUM_COLUMN_ID = 0;
-    private static final int NUM_COLUMN_BOOK = 1;
+    private static final int NUM_COLUMN_NAME = 1;
     private static final int NUM_COLUMN_CONTENT_ID = 2;
     private static final int NUM_COLUMN_SCROLL = 3;
 
@@ -47,57 +47,44 @@ public class DBBooks {
 
     public long insert(String bookName, int content_id, int scroll) {
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_BOOK, bookName);
+        cv.put(COLUMN_NAME, bookName);
         cv.put(COLUMN_CONTENT_ID, content_id);
         cv.put(COLUMN_SCROLL, scroll);
         return mDataBase.insert(TABLE_NAME, null, cv);
     }
-    public int update(BookFromDB bookFromDB) {
+    public int update(BookItem bookItem) {
         ContentValues cv=new ContentValues();
-        cv.put(COLUMN_BOOK, bookFromDB.getBookFromDBName());
-        cv.put(COLUMN_CONTENT_ID, bookFromDB.getContent_id());
-        cv.put(COLUMN_SCROLL, bookFromDB.getScroll());
-        return mDataBase.update(TABLE_NAME, cv, COLUMN_ID + " = ?",new String[] { String.valueOf(bookFromDB.getId())});
+        cv.put(COLUMN_NAME, bookItem.getName());
+        cv.put(COLUMN_CONTENT_ID, bookItem.getContent_id());
+        cv.put(COLUMN_SCROLL, bookItem.getScroll());
+        return mDataBase.update(TABLE_NAME, cv, COLUMN_ID + " = ?",new String[] { String.valueOf(bookItem.getId())});
     }
-    public BookFromDB select(long id) {
+    public BookItem select(long id) {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
         if(mCursor.moveToFirst()) {
             mCursor.moveToFirst();
             int bid = mCursor.getInt(NUM_COLUMN_ID);
-            String book = mCursor.getString(NUM_COLUMN_BOOK);
+            String book = mCursor.getString(NUM_COLUMN_NAME);
             int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
             int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
-            return new BookFromDB(bid, book, content_id, scroll);
-        }else{
-            return null;
-        }
-    }
-    public BookFromDB selectBookByContent(int content_id_arg){
-        Cursor mCursor = mDataBase.query(TABLE_NAME, null, COLUMN_CONTENT_ID + " = ?", new String[]{String.valueOf(content_id_arg)}, null, null, null);
-        if(mCursor.moveToFirst()) {
-            mCursor.moveToFirst();
-            int bid = mCursor.getInt(NUM_COLUMN_ID);
-            String book = mCursor.getString(NUM_COLUMN_BOOK);
-            int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
-            int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
-            return new BookFromDB(bid, book, content_id, scroll);
+            return new BookItem(bid, book, content_id, scroll);
         }else{
             return null;
         }
     }
 
-    public ArrayList<BookFromDB> selectAll() {
+    public ArrayList<BookItem> selectAll() {
         Cursor mCursor = mDataBase.query(TABLE_NAME, null, null, null, null, null, null);
 
-        ArrayList<BookFromDB> arr = new ArrayList<BookFromDB>();
+        ArrayList<BookItem> arr = new ArrayList<>();
         mCursor.moveToFirst();
         if (!mCursor.isAfterLast()) {
             do {
                 int id1 = mCursor.getInt(NUM_COLUMN_ID);
-                String book = mCursor.getString(NUM_COLUMN_BOOK);
+                String book = mCursor.getString(NUM_COLUMN_NAME);
                 int content_id = mCursor.getInt(NUM_COLUMN_CONTENT_ID);
                 int scroll = mCursor.getInt(NUM_COLUMN_SCROLL);
-                arr.add(new BookFromDB(id1, book, content_id, scroll));
+                arr.add(new BookItem(id1, book, content_id, scroll));
             } while (mCursor.moveToNext());
         }
         return arr;
@@ -116,7 +103,7 @@ public class DBBooks {
         public void onCreate(SQLiteDatabase db) {
             String query = "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_BOOK + " TEXT, " + COLUMN_CONTENT_ID + " INTEGER, " + COLUMN_SCROLL + " INTEGER);";
+                    COLUMN_NAME + " TEXT, " + COLUMN_CONTENT_ID + " INTEGER, " + COLUMN_SCROLL + " INTEGER);";
             db.execSQL(query);
         }
 

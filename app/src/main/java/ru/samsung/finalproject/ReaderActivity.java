@@ -18,21 +18,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ReaderActivity extends AppCompatActivity {
-    public static String intent_file_path;
     SharedPreferences sharedPreferences;
-    StringBuilder str;
-    File file;
-    File file1;
     final static int MY_PERMISSION_REQUEST = 1;
-    Integer id_from_intent;
-    static ListView listView;
+    ListView listView;
     BaseAdapter adapter;
     DBBooks dbBooks;
-    int scroll;
-    String name;
-    int content_id;
-
-
+    static BookItem bookItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,21 +33,18 @@ public class ReaderActivity extends AppCompatActivity {
         dbBooks=new DBBooks(this);
         sharedPreferences = getPreferences(MODE_PRIVATE);
         boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
-        str = new StringBuilder();
         if (!PermissionUtils.hasPermissions(this)) {
             PermissionUtils.requestPermissions(this, MY_PERMISSION_REQUEST);
         } else {
-            Log.d("TAQwerty", "разрешение дано!");
+            Log.d("TAQwerty", "СЂР°Р·СЂРµС€РµРЅРёРµ РґР°РЅРѕ!");
         }
-        intent_file_path = (String) getIntent().getSerializableExtra("INTENT_FILE_PATH");
-        id_from_intent = (Integer) getIntent().getSerializableExtra("INTENT_ID");
-        content_id = (Integer) getIntent().getSerializableExtra("CONTENT_ID");
-        scroll = dbBooks.selectBookByContent(content_id).getScroll();
-        int id2 = dbBooks.selectBookByContent(content_id).getId();
-        Log.d("READTAG", "id2: "+id2);
-        name=(String) getIntent().getSerializableExtra("NAME");
-        file = Environment.getExternalStorageDirectory();
-        file1 = new File(file, intent_file_path);
+
+        int position = getIntent().getIntExtra("Position", -1);
+        bookItem = MainActivity.books.get(position);
+        File file = Environment.getExternalStorageDirectory();
+        Log.d("FILETAG", "getExternalStorageDirectory - "+Environment.getExternalStorageDirectory());
+        Log.d("FILETAG", "bookItem.getFilePath - "+bookItem.getFilePath());
+        File file1 = new File(file, bookItem.getFilePath());
         ArrayList<ReaderItem> pages = readFile(file1.getName());
         adapter = new ReaderAdapter(this,pages);
 
@@ -64,31 +52,28 @@ public class ReaderActivity extends AppCompatActivity {
         dbBooks=new DBBooks(this);
         loadData();
 
-
-
-
     }
 
     void saveData() {
-        BookFromDB bookFromDB = new BookFromDB(id_from_intent, name, content_id, listView.getScrollY() );
-        Log.d("READTAG", "save data scroll "+listView.getScrollY());
-        Log.d("READTAG", "save data id_from_intent "+id_from_intent);
-        dbBooks.update(bookFromDB);
+        bookItem.setScroll(listView.getScrollY());
+        Log.d("READTAG", "save data scroll "+bookItem.getScroll());
+        dbBooks.update(bookItem);
     }
+
     void loadData() {
+        int scroll = bookItem.getScroll();
         Log.d("READTAG", "loadData: "+ scroll);
         if(scroll!=-1){
             listView.scrollTo(0,scroll);
-
         }
-
-
     }
+
     @Override
     protected void onDestroy() {
         saveData();
         super.onDestroy();
     }
+
     private ArrayList<ReaderItem> readFile(String name){
         File storageDirectory = Environment.getExternalStorageDirectory();
         File downloadDirectory = new File(storageDirectory, "Download");
@@ -126,4 +111,3 @@ public class ReaderActivity extends AppCompatActivity {
         return pages.get(page).getReadable();
     }
 }
-

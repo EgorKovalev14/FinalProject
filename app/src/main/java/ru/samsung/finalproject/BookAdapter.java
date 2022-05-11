@@ -1,55 +1,43 @@
 package ru.samsung.finalproject;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
-public class BookAdapter extends BaseAdapter {
+public class BookAdapter extends ArrayAdapter<BookItem> {
     ArrayList<BookItem> list;
-    LayoutInflater inflater;
 
     public BookAdapter(Context context, ArrayList<BookItem> list) {
+        super(context, R.layout.book_adapter_item, list);
         this.list=list;
-        inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return list.size();
-    }
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.book_adapter_item, parent, false);
+        }
 
-    @Override
-    public Object getItem(int i) {
-        return list.get(i);
-    }
+        BookItem bookItem = list.get(position);
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view=inflater.inflate(R.layout.book_adapter_item, viewGroup, false);
-
-        BookItem bookItem = (BookItem)getItem(i);
-
-        TextView book_name = view.findViewById(R.id.book_name);
+        TextView book_name = convertView.findViewById(R.id.book_name);
         book_name.setText(bookItem.getName());
 
-        CheckBox book_checkBox = view.findViewById(R.id.book_checkBox);
+        CheckBox book_checkBox = convertView.findViewById(R.id.book_checkBox);
         book_checkBox.setChecked(bookItem.isRead());
 
-        return view;
+        return convertView;
     }
-
-
-
-
 }
