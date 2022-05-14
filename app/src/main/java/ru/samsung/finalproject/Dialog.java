@@ -25,8 +25,6 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
     BookItem bookItem;
     int element_id;
     Context context;
-    int content_id;
-    int scroll;
 
     public void setDbBooks(DBBooks dbBooks) {
         this.dbBooks = dbBooks;
@@ -47,12 +45,10 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
         return v;
     }
 
-    public Dialog(String stringForEditText, int element_id, Context context, int content_id, int scroll) {
+    public Dialog(String stringForEditText, int element_id, Context context) {
         this.stringForEditText = stringForEditText;
         this.element_id = element_id;
         this.context = context;
-        this.content_id = content_id;
-        this.scroll=scroll;
     }
 
     @Override
@@ -71,7 +67,6 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
                 }
                 MainActivity.books.get(element_id).setName(String.valueOf(editText.getText()));
                 MainActivity.books.get(element_id).setFilePath("/Download/"+editText.getText()+".txt");
-                bookItem = new BookItem(String.valueOf(editText.getText()), false,editText.getText().toString()+".txt",content_id,scroll);
                 dbBooks.update(bookItem);
                 ArrayList<BookItem> arrayList=dbBooks.selectAll();
                 for(int i = 0; i<arrayList.size();i++){

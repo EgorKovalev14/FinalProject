@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.change_name:
                 Log.d("INFOTAG", "id1:"+info.position);
                 String s = ((BookItem)listView.getAdapter().getItem(info.position)).getName();
-                dlg = new Dialog(s, info.position, getApplicationContext(), ((BookItem) listView.getAdapter().getItem(info.position)).getContent_id(),((BookItem)listView.getAdapter().getItem(info.position)).getScroll());
+                dlg = new Dialog(s, info.position, getApplicationContext());
                 dlg.setDbBooks(dbBooks);
                 dlg.show(getSupportFragmentManager(), "dlg");
 
