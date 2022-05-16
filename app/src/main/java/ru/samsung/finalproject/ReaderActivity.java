@@ -36,12 +36,14 @@ public class ReaderActivity extends AppCompatActivity {
         if (!PermissionUtils.hasPermissions(this)) {
             PermissionUtils.requestPermissions(this, MY_PERMISSION_REQUEST);
         } else {
-            Log.d("TAQwerty", "разрешение дано!");
+            Log.d("TAQwerty", "СЂР°Р·СЂРµС€РµРЅРёРµ РґР°РЅРѕ!");
         }
 
         int position = getIntent().getIntExtra("Position", -1);
         bookItem = MainActivity.books.get(position);
         File file = Environment.getExternalStorageDirectory();
+        Log.d("FILETAG", "getExternalStorageDirectory - "+Environment.getExternalStorageDirectory());
+        Log.d("FILETAG", "bookItem.getFilePath - "+bookItem.getFilePath());
         File file1 = new File(file, bookItem.getFilePath());
         ArrayList<ReaderItem> pages = readFile(file1.getName());
         adapter = new ReaderAdapter(this,pages);
@@ -109,4 +111,3 @@ public class ReaderActivity extends AppCompatActivity {
         return pages.get(page).getReadable();
     }
 }
-
