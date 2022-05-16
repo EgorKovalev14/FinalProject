@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class ReaderAdapter extends BaseAdapter implements View.OnClickListener {
@@ -14,7 +16,6 @@ public class ReaderAdapter extends BaseAdapter implements View.OnClickListener {
     LayoutInflater inflater;
     Context context;
     static View view;
-
     public ReaderAdapter(Context context, ArrayList<ReaderItem> list) {
         this.list=list;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -46,7 +47,7 @@ public class ReaderAdapter extends BaseAdapter implements View.OnClickListener {
         readable_name.setOnClickListener(this);
         readable_name.setText(readerItem.getReadable());
         readable_name.setTextIsSelectable(true);
-        readable_name.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(context));
+        readable_name.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(context, readable_name));
         readable_name.setShowSoftInputOnFocus(false);
 
         return view;

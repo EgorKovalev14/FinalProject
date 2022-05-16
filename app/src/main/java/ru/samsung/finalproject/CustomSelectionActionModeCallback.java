@@ -14,9 +14,11 @@ import java.util.ArrayList;
 
 public class CustomSelectionActionModeCallback implements ActionMode.Callback {
     DBQuotes dbQuotes;
+    TextView textView;
 
-    public CustomSelectionActionModeCallback(Context context){
+    public CustomSelectionActionModeCallback(Context context, TextView textView){
         dbQuotes= new DBQuotes(context);
+        this.textView=textView;
     }
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -49,9 +51,8 @@ public class CustomSelectionActionModeCallback implements ActionMode.Callback {
             case 12345:
                 String bookName = ReaderActivity.bookItem.getName();
                 try {
-                    TextView view = (TextView) ReaderAdapter.view;
-                    String quote = String.valueOf(view.getText().subSequence
-                            (view.getSelectionStart(),view.getSelectionEnd()));
+                    String quote = String.valueOf(textView.getText().subSequence
+                            (textView.getSelectionStart(),textView.getSelectionEnd()));
                     Log.d("INFOTAG", quote);
                     dbQuotes.insert(bookName, quote);
 
