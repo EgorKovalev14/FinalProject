@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ReaderActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
     final static int MY_PERMISSION_REQUEST = 1;
     ListView listView;
     BaseAdapter adapter;
     DBBooks dbBooks;
     static BookItem bookItem;
+    ArrayList<ReaderItem> pages;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,8 +31,6 @@ public class ReaderActivity extends AppCompatActivity {
         setContentView(R.layout.reader_activity);
         listView=findViewById(R.id.reader_list);
         dbBooks=new DBBooks(this);
-        sharedPreferences = getPreferences(MODE_PRIVATE);
-        boolean hasVisited = sharedPreferences.getBoolean("hasVisited", false);
         if (!PermissionUtils.hasPermissions(this)) {
             PermissionUtils.requestPermissions(this, MY_PERMISSION_REQUEST);
         } else {
@@ -45,7 +43,14 @@ public class ReaderActivity extends AppCompatActivity {
         Log.d("FILETAG", "getExternalStorageDirectory - "+Environment.getExternalStorageDirectory());
         Log.d("FILETAG", "bookItem.getFilePath - "+bookItem.getFilePath());
         File file1 = new File(file, bookItem.getFilePath());
-        ArrayList<ReaderItem> pages = readFile(file1.getName());
+        Log.d("MYTAG", "file1.getName "+file1.getName());
+        if(file1.getName().contains("/")){
+            pages = readFile(file1.getName());
+
+        }else{
+            pages = readFile("/"+file1.getName());
+
+        }
         adapter = new ReaderAdapter(this,pages);
 
         listView.setAdapter(adapter);
@@ -77,7 +82,13 @@ public class ReaderActivity extends AppCompatActivity {
     private ArrayList<ReaderItem> readFile(String name){
         File storageDirectory = Environment.getExternalStorageDirectory();
         File downloadDirectory = new File(storageDirectory, "Download");
+        if(!name.contains(".txt")){
+            name=name+".txt";
+        }
         File file = new File(downloadDirectory, name);
+        Log.d("MYTAG", "download directory  " + file.getAbsolutePath());
+        Log.d("MYTAG", "readFile: file exists  " + name+ " " + file.exists());
+        Log.d("MYTAG", "readFile: file can read  " + name+ " " + file.canRead());
         if (file.exists() && file.canRead()){
             Scanner scanner = null;
             try {

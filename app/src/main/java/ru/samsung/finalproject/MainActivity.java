@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     DBBooks dbBooks;
     private static final int PERMISSION_STORAGE = 101;
     static ArrayList<BookItem> books;
+    int content_id;
+    BookItem bookItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             for(int i = 0; i<books.size(); i++){
                 BookItem item = books.get(i);
                 String b = item.getName();
-                item.setName(b.substring(0, b.lastIndexOf(".")));
+                Log.d("MYTAG", "name "+item.getName());
+                if(b.contains(".")){
+                    item.setName(b.substring(0, b.lastIndexOf(".")));
+                }else{
+                    item.setName(b);
+                }
                 item.setRead(false);
                 item.setFilePath("/" + b);
             }
@@ -61,11 +68,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (getIntent().getData() != null ) {
                 Log.d("MYTAG", "intent " + getIntent().getData());
                 String name = getCursorValue();
-                int content_id = Integer.parseInt(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/") + 1));
+                String s_content_id=getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/") + 1);
+                if(s_content_id.charAt(0)>'0'&&s_content_id.charAt(0)<'9'){
+                    content_id = Integer.parseInt(getIntent().getData().toString().substring(getIntent().getData().toString().lastIndexOf("/") + 1));
+                    bookItem = findBookInList(content_id);
+                }else{
+                    bookItem = findBookInList(s_content_id);
+                }
                 Log.d("MYTAG", "name " + name);
                 Log.d("MYTAG", "content_id " + content_id);
 
-                BookItem bookItem = findBookInList(content_id);
                 if (bookItem == null){
                     int scroll = 0;
                     books.add(new BookItem(name.substring(0, name.lastIndexOf(".")), false, "/" + name, content_id,scroll ));
@@ -86,6 +98,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         for (int i = 0; i < books.size(); i++) {
             BookItem bookItem = books.get(i);
             if (bookItem.getContent_id() == contentId){
+                return bookItem;
+            }
+        }
+        return null;
+    }
+    private BookItem findBookInList(String sContentId){
+        for (int i = 0; i < books.size(); i++) {
+            BookItem bookItem = books.get(i);
+            if (bookItem.getName() == sContentId){
                 return bookItem;
             }
         }
