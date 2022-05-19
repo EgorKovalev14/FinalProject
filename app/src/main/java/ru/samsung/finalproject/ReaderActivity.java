@@ -28,6 +28,7 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
     DBBooks dbBooks;
     static BookItem bookItem;
     ArrayList<ReaderItem> pages;
+    int text_size;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
         } else {
             Log.d("TAQwerty", "СЂР°Р·СЂРµС€РµРЅРёРµ РґР°РЅРѕ!");
         }
-
+        text_size = getIntent().getIntExtra("TEXT_SIZE", 1);
         if(getSupportActionBar()!=null)
             this.getSupportActionBar().hide();
         int position = getIntent().getIntExtra("Position", -1);

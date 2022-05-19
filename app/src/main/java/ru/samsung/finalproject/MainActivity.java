@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     static ArrayList<BookItem> books;
     int content_id;
     BookItem bookItem;
+    int text_size = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +158,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.quote_list:
                 Intent intent = new Intent(MainActivity.this, QuoteActivity.class);
                 startActivity(intent);
+            case R.id.text_big:
+                text_size=22;
+            case R.id.text_medium:
+                text_size=18;
+            case R.id.text_small:
+                text_size=14;
+            case R.id.about_app:
+
         }
         return true;
     }
@@ -209,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String intent_file_path = info.getFilePath();
         Intent intent = new Intent(MainActivity.this, ReaderActivity.class);
         intent.putExtra("Position", i);
+        intent.putExtra("TEXT_SIZE", text_size);
         startActivity(intent);
     }
 }

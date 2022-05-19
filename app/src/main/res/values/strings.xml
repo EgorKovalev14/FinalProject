@@ -2,6 +2,9 @@
     <string name="app_name">E-Book</string>
     <string name="titleChangeName">Изменить название книги</string>
     <string name="titleDeleteBook">Удалить книгу</string>
+    <string name="aboutApp">Приложение было создано благодаря курсу Samsung It School, под наставничеством Константина Актыбаева.
+    Ссылка на гит: https://github.com/EgorKovalev14/FinalProject</string>
+
 
 
 
