@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -14,10 +16,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
 
-public class ReaderActivity extends AppCompatActivity {
+public class ReaderActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     final static int MY_PERMISSION_REQUEST = 1;
     ListView listView;
     BaseAdapter adapter;
@@ -38,7 +42,9 @@ public class ReaderActivity extends AppCompatActivity {
         }
 
         int position = getIntent().getIntExtra("Position", -1);
+        Log.d("READTAG", "position  "+position);
         bookItem = MainActivity.books.get(position);
+        Log.d("READTAG", "bookItem  "+bookItem.toString());
         File file = Environment.getExternalStorageDirectory();
         Log.d("FILETAG", "getExternalStorageDirectory - "+Environment.getExternalStorageDirectory());
         Log.d("FILETAG", "bookItem.getFilePath - "+bookItem.getFilePath());
@@ -57,19 +63,45 @@ public class ReaderActivity extends AppCompatActivity {
         dbBooks=new DBBooks(this);
         loadData();
 
+        listView.setOnItemClickListener(this);
+
+
     }
 
     void saveData() {
-        bookItem.setScroll(listView.getScrollY());
-        Log.d("READTAG", "save data scroll "+bookItem.getScroll());
+
+//        View c = listView.getChildAt(0);
+//        int scrollY = -c.getTop() + listView.getFirstVisiblePosition() * c.getHeight();
+        int scrollY=getScroll();
+        bookItem.setScroll(scrollY);
+        Log.d("READTAG", "save data scroll "+scrollY);
         dbBooks.update(bookItem);
+    }
+
+
+    private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
+
+    private int getScroll() {
+        View c = listView.getChildAt(0); //this is the first visible row
+        int scrollY = -c.getTop();
+        listViewItemHeights.put(listView.getFirstVisiblePosition(), c.getHeight());
+        for (int i = 0; i < listView.getFirstVisiblePosition(); ++i) {
+            if (listViewItemHeights.get(i) != null) // (this is a sanity check)
+                scrollY += listViewItemHeights.get(i); //add all heights of the views that are gone
+        }
+        return scrollY;
     }
 
     void loadData() {
         int scroll = bookItem.getScroll();
         Log.d("READTAG", "loadData: "+ scroll);
         if(scroll!=-1){
-            listView.scrollTo(0,scroll);
+            listView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                    listView.smoothScrollToPositionFromTop(bookItem.getScroll(),0);
+                }
+            });
         }
     }
 
@@ -120,5 +152,11 @@ public class ReaderActivity extends AppCompatActivity {
 
     private String readPage(ArrayList<ReaderItem> pages, int page){
         return pages.get(page).getReadable();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        listView.scrollListBy(3000);
+        Log.d("NIGTAG", "onItemClick: ");
     }
 }
