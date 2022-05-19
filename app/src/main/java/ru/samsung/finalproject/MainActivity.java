@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             getBooksList();
         }
+
     }
 
     private void getBooksList(){
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }else{
                     item.setName(b);
                 }
-                item.setRead(false);
                 item.setFilePath("/" + b);
             }
 

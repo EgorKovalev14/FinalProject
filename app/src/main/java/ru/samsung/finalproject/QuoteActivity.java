@@ -19,6 +19,8 @@ public class QuoteActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quote_activity);
+        if(getSupportActionBar()!=null)
+            this.getSupportActionBar().hide();
         dbQuotes = new DBQuotes(this);
         listView = findViewById(R.id.quote_list);
         ArrayList<QuoteItem> quotes = new ArrayList<>();

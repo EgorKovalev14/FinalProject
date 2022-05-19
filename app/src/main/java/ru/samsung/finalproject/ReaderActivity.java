@@ -41,6 +41,8 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
             Log.d("TAQwerty", "СЂР°Р·СЂРµС€РµРЅРёРµ РґР°РЅРѕ!");
         }
 
+        if(getSupportActionBar()!=null)
+            this.getSupportActionBar().hide();
         int position = getIntent().getIntExtra("Position", -1);
         Log.d("READTAG", "position  "+position);
         bookItem = MainActivity.books.get(position);
@@ -72,25 +74,14 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
 
 //        View c = listView.getChildAt(0);
 //        int scrollY = -c.getTop() + listView.getFirstVisiblePosition() * c.getHeight();
-        int scrollY=getScroll();
+        int scrollY=listView.getFirstVisiblePosition();
         bookItem.setScroll(scrollY);
         Log.d("READTAG", "save data scroll "+scrollY);
         dbBooks.update(bookItem);
     }
 
 
-    private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
 
-    private int getScroll() {
-        View c = listView.getChildAt(0); //this is the first visible row
-        int scrollY = -c.getTop();
-        listViewItemHeights.put(listView.getFirstVisiblePosition(), c.getHeight());
-        for (int i = 0; i < listView.getFirstVisiblePosition(); ++i) {
-            if (listViewItemHeights.get(i) != null) // (this is a sanity check)
-                scrollY += listViewItemHeights.get(i); //add all heights of the views that are gone
-        }
-        return scrollY;
-    }
 
     void loadData() {
         int scroll = bookItem.getScroll();
@@ -131,7 +122,7 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
                 while (scanner.hasNext()){
                     page += scanner.nextLine()+"\n";
                     line++;
-                    if (line > 19){
+                    if (line > 10){
                         pages.add(new ReaderItem(page));
                         page = "";
                         line = 0;
