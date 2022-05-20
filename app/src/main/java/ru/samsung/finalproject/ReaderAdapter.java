@@ -15,12 +15,13 @@ public class ReaderAdapter extends BaseAdapter {
     ArrayList<ReaderItem> list;
     LayoutInflater inflater;
     Context context;
-    static View view;
+    int text_size;
 
-    public ReaderAdapter(Context context, ArrayList<ReaderItem> list) {
+    public ReaderAdapter(Context context, ArrayList<ReaderItem> list, int text_size) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+        this.text_size=text_size;
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ReaderAdapter extends BaseAdapter {
         readable_name.setTextIsSelectable(true);
         readable_name.setCustomSelectionActionModeCallback(new CustomSelectionActionModeCallback(context, readable_name));
         readable_name.setShowSoftInputOnFocus(false);
+        readable_name.setTextSize(text_size);
 
         return view;
     }

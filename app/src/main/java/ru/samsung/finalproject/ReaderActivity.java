@@ -60,7 +60,7 @@ public class ReaderActivity extends AppCompatActivity implements AdapterView.OnI
             pages = readFile("/"+file1.getName());
 
         }
-        adapter = new ReaderAdapter(this,pages);
+        adapter = new ReaderAdapter(this,pages,text_size);
 
         listView.setAdapter(adapter);
         dbBooks=new DBBooks(this);
