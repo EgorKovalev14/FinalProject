@@ -165,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.text_small:
                 text_size=14;
             case R.id.about_app:
+                Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent1);
 
         }
         return true;
