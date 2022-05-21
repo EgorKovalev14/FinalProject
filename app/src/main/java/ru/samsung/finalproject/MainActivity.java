@@ -3,6 +3,8 @@ package ru.samsung.finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } else {
             getBooksList();
         }
-
     }
 
     private void getBooksList(){
@@ -158,15 +159,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.quote_list:
                 Intent intent = new Intent(MainActivity.this, QuoteActivity.class);
                 startActivity(intent);
+                break;
             case R.id.text_big:
                 text_size=22;
+                break;
             case R.id.text_medium:
                 text_size=18;
+                break;
             case R.id.text_small:
                 text_size=14;
+                break;
             case R.id.about_app:
                 Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent1);
+                break;
 
         }
         return true;

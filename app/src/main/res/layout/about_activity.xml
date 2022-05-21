@@ -4,9 +4,15 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView_about"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="@string/aboutApp" />
+        android:text="@string/aboutApp"
+        android:textStyle="normal"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:layout_margin="10dp"/>
 </LinearLayout>
